@@ -87,7 +87,7 @@
 <div class="crt-overlay" aria-hidden="true"></div>
 
 <!-- Navigation -->
-<nav class="fixed top-0 z-50 w-full bg-[#050505]/80 backdrop-blur-2xl">
+<nav class="fixed top-0 z-50 w-full bg-[#050505]/95">
 	<div class="mx-auto flex h-20 max-w-[90rem] items-center justify-between px-6 md:px-12">
 		<a href="{base}/" class="flex items-center gap-3 transition-opacity hover:opacity-80">
 			<img src={logo} alt="Traders@MIT" class="h-8 w-auto" />

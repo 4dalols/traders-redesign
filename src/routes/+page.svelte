@@ -73,8 +73,8 @@
 	-->
 
 	<!-- Glow effects -->
-	<div class="absolute right-[-15%] top-[5%] h-[700px] w-[700px] rounded-full bg-green-electric/[0.04] blur-[180px]"></div>
-	<div class="absolute left-[-10%] bottom-[-10%] h-[500px] w-[500px] rounded-full bg-violet-accent/[0.025] blur-[150px]"></div>
+	<div class="absolute right-[-15%] top-[5%] h-[1060px] w-[1060px] translate-x-[180px] -translate-y-[180px] rounded-full" style="background: radial-gradient(closest-side, rgba(0, 220, 130, 0.04), rgba(0, 220, 130, 0.02) 45%, transparent)"></div>
+	<div class="absolute left-[-10%] bottom-[-10%] h-[800px] w-[800px] translate-x-[-150px] translate-y-[150px] rounded-full" style="background: radial-gradient(closest-side, rgba(139, 92, 246, 0.025), rgba(139, 92, 246, 0.012) 45%, transparent)"></div>
 
 	<div class="relative z-10 w-full px-6 md:px-12 lg:px-16 py-16 md:py-24">
 		<div class="mx-auto grid max-w-[85rem] grid-cols-1 items-center gap-12 lg:grid-cols-12">
@@ -179,7 +179,7 @@
 			<div class="absolute -bottom-3 -right-3 w-20 h-20 border-b-2 border-r-2 border-violet-accent/25 z-10"></div>
 
 			<!-- Subtle glow behind image -->
-			<div class="absolute -inset-8 bg-green-electric/[0.02] blur-3xl rounded-3xl"></div>
+			<div class="absolute -inset-8 rounded-3xl" style="background: radial-gradient(closest-side, rgba(0, 220, 130, 0.02), transparent)"></div>
 
 			<div class="relative overflow-hidden">
 				<img
