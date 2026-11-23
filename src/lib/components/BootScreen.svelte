@@ -28,7 +28,6 @@
 		}
 		sessionStorage.setItem('booted', '1');
 
-		const width = Math.max(...ART.map((l) => l.length));
 		const resolveAt = ART.map((row) =>
 			[...row].map((_, c) => 900 + c * 16 + Math.random() * 500)
 		);
@@ -57,12 +56,12 @@
 							out += ' ';
 							return;
 						}
-						const hue = (140 + (c / width) * 140 + r * 6 - t / 8) % 360;
+						const light = 43 + 14 * Math.max(0, Math.sin(c / 5 + r * 0.4 - t / 450)) ** 3;
 						if (t >= resolveAt[r][c]) {
-							out += `<span style="color:hsl(${hue} 95% 62%)">${ch}</span>`;
+							out += `<span style="color:hsl(155 100% ${light.toFixed(1)}%)">${ch}</span>`;
 						} else if (Math.random() < 0.6) {
 							const g = GLYPHS[(Math.random() * GLYPHS.length) | 0];
-							out += `<span style="color:hsl(${hue} 60% 35%)">${esc(g)}</span>`;
+							out += `<span style="color:#00DC8255">${esc(g)}</span>`;
 						} else out += ' ';
 					});
 					out += '\n';

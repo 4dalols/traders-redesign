@@ -10,7 +10,7 @@
 
 	onMount(() => {
 		const ro = new ResizeObserver(() => {
-			fontSize = Math.min(26, wrap.clientWidth / (WIDTH * 0.62));
+			fontSize = Math.min(28, wrap.clientWidth / (WIDTH * 0.62));
 		});
 		ro.observe(wrap);
 
@@ -27,15 +27,15 @@
 			ART.forEach((line, r) => {
 				[...line].forEach((ch, c) => {
 					if (ch === ' ') return void (out += ' ');
-					const hue = (140 + (c / WIDTH) * 150 + r * 8 - t / 10) % 360;
+					const wave = Math.sin(c / 5 + r * 0.4 - t / 450);
 					const near = Math.hypot((c - mouse.col) * 0.5, r - mouse.row) < 2.2;
 					if (t - start < resolveAt[r][c]) {
-						out += Math.random() < 0.55 ? `<span style="color:hsl(${hue} 60% 35%)">${esc(randomGlyph())}</span>` : ' ';
+						out += Math.random() < 0.55 ? `<span style="color:#00DC8255">${esc(randomGlyph())}</span>` : ' ';
 					} else if (near && Math.random() < 0.5) {
-						out += `<span style="color:#fff">${esc(randomGlyph())}</span>`;
+						out += `<span style="color:#8B5CF6">${esc(randomGlyph())}</span>`;
 					} else {
-						const light = 55 + 12 * Math.sin(c / 3 - t / 300);
-						out += `<span style="color:hsl(${hue} 95% ${light}%)">${ch}</span>`;
+						const light = 43 + 14 * Math.max(0, wave) ** 3;
+						out += `<span style="color:hsl(155 100% ${light.toFixed(1)}%)">${ch}</span>`;
 					}
 				});
 				out += '\n';
@@ -87,10 +87,9 @@
 	.ascii-logo {
 		font-family: ui-monospace, Menlo, Consolas, 'DejaVu Sans Mono', 'Courier New', monospace;
 		line-height: 1.05;
-		text-shadow: 0 0 10px currentColor;
 		margin: 0;
 	}
 	.ascii-logo :global(span) {
-		text-shadow: 0 0 12px currentColor;
+		text-shadow: 0 0 6px rgba(0, 220, 130, 0.4);
 	}
 </style>
