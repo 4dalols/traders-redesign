@@ -248,10 +248,10 @@ h1:not([data-no-decode]), h2 {
 	background-position: 100% 0;
 	-webkit-background-clip: text;
 	background-clip: text;
-	animation: title-sweep 4s cubic-bezier(0.4, 0, 0.2, 1) 0.15s infinite both;
+	animation: title-sweep 1s cubic-bezier(0.4, 0, 0.2, 1) 0.15s infinite both;
 }
 @keyframes title-sweep {
-	35%,
+	80%,
 	100% { background-position: 0 0; }
 }
 @media (prefers-reduced-motion: reduce) {
