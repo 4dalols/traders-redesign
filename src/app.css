@@ -230,3 +230,29 @@ h1:not([data-no-decode]), h2 {
 		display: none;
 	}
 }
+
+/* Page titles: one green highlight sweep on load */
+.title-sweep {
+	position: relative;
+}
+.title-sweep::after {
+	content: attr(data-sweep);
+	position: absolute;
+	inset: 0;
+	white-space: pre-line;
+	pointer-events: none;
+	color: transparent;
+	text-shadow: none;
+	background: linear-gradient(100deg, transparent 38%, #00dc82 46%, #8cffd0 50%, #00dc82 54%, transparent 62%) no-repeat;
+	background-size: 300% 100%;
+	background-position: 100% 0;
+	-webkit-background-clip: text;
+	background-clip: text;
+	animation: title-sweep 1.4s cubic-bezier(0.4, 0, 0.2, 1) 0.15s both;
+}
+@keyframes title-sweep {
+	to { background-position: 0 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+	.title-sweep::after { display: none; }
+}
