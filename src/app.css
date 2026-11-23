@@ -231,7 +231,7 @@ h1:not([data-no-decode]), h2 {
 	}
 }
 
-/* Page titles: one green highlight sweep on load */
+/* Page titles: green highlight sweeps across every 4 s */
 .title-sweep {
 	position: relative;
 }
@@ -248,10 +248,11 @@ h1:not([data-no-decode]), h2 {
 	background-position: 100% 0;
 	-webkit-background-clip: text;
 	background-clip: text;
-	animation: title-sweep 1.4s cubic-bezier(0.4, 0, 0.2, 1) 0.15s both;
+	animation: title-sweep 4s cubic-bezier(0.4, 0, 0.2, 1) 0.15s infinite both;
 }
 @keyframes title-sweep {
-	to { background-position: 0 0; }
+	35%,
+	100% { background-position: 0 0; }
 }
 @media (prefers-reduced-motion: reduce) {
 	.title-sweep::after { display: none; }
