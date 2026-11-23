@@ -1,6 +1,9 @@
 <script lang="ts">
 	import groupPhoto from '$lib/assets/group.jpg';
 	import { sponsors } from '$lib/data/sponsors';
+	import ParticleLogo from '$lib/components/ParticleLogo.svelte';
+	import Odometer from '$lib/components/Odometer.svelte';
+	import { magnetic, tilt } from '$lib/fx/actions';
 
 	// Dynamic imports for sponsor logos (for ticker)
 	const sponsorLogos = import.meta.glob('$lib/assets/sponsors/*.{png,svg,jpg}', {
@@ -85,11 +88,8 @@
 
 			<!-- Main title — massive, asymmetric -->
 			<h1 class="relative">
-				<span
-					class="block font-display text-[clamp(4.5rem,15vw,13rem)] font-[800] leading-[0.82] tracking-[-0.04em] text-stroke text-green-electric"
-				>
-					TRADERS
-				</span>
+				<span class="sr-only">TRADERS</span>
+				<ParticleLogo />
 			<span
 				class="block mt-2 ml-1 md:ml-3 text-[clamp(2.5rem,8vw,6.5rem)] font-[300] leading-[0.9] tracking-[-0.02em]"
 				style="font-family: 'Open Sans Condensed', sans-serif;"
@@ -109,6 +109,7 @@
 				<div class="mt-10 flex flex-wrap items-center gap-5">
 					<a
 						href="/competition"
+						use:magnetic
 						class="group relative inline-flex items-center gap-3 bg-green-electric px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-[#050505] transition-all duration-300 hover:bg-green-bright hover:shadow-[0_0_50px_rgba(0,220,130,0.25)] active:scale-[0.97]"
 					>
 						<span>Competition</span>
@@ -128,6 +129,7 @@
 					</a>
 					<a
 						href="/about"
+						use:magnetic
 						class="inline-flex items-center px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-zinc-300 border border-zinc-600 transition-all duration-300 hover:text-zinc-100 hover:border-zinc-400 active:scale-[0.97]"
 					>
 						About Us
@@ -192,7 +194,7 @@
 			<div class="relative pl-6">
 				<div class="absolute left-0 top-0 bottom-0 w-[2px] bg-gradient-to-b from-green-electric to-green-electric/0"></div>
 				<span class="block font-mono text-6xl md:text-7xl lg:text-[5.5rem] font-bold text-green-electric leading-none">
-					$20K<span class="text-green-electric/25">+</span>
+					<Odometer value="$20K" suffix="+" />
 				</span>
 				<span class="block mt-4 font-mono text-xs tracking-[0.25em] uppercase text-zinc-400">In Competition Prizes</span>
 			</div>
@@ -201,7 +203,7 @@
 			<div class="relative pl-6 md:mt-16">
 				<div class="absolute left-0 top-0 bottom-0 w-[2px] bg-gradient-to-b from-violet-accent to-violet-accent/0"></div>
 				<span class="block font-mono text-6xl md:text-7xl lg:text-[5.5rem] font-bold text-zinc-100 leading-none">
-					120<span class="text-green-electric/25">+</span>
+					<Odometer value="120" suffix="+" />
 				</span>
 				<span class="block mt-4 font-mono text-xs tracking-[0.25em] uppercase text-zinc-400">Competitors Annually</span>
 			</div>
@@ -210,7 +212,7 @@
 			<div class="relative pl-6 md:mt-32">
 				<div class="absolute left-0 top-0 bottom-0 w-[2px] bg-gradient-to-b from-amber-accent to-amber-accent/0"></div>
 				<span class="block font-mono text-6xl md:text-7xl lg:text-[5.5rem] font-bold text-zinc-100 leading-none">
-					25<span class="text-green-electric/25">+</span>
+					<Odometer value="25" suffix="+" />
 				</span>
 				<span class="block mt-4 font-mono text-xs tracking-[0.25em] uppercase text-zinc-400">Universities Represented</span>
 			</div>
@@ -225,6 +227,7 @@
 			<!-- Large card — Compete -->
 			<a
 				href="/competition"
+				use:tilt={8}
 				class="group relative md:col-span-7 overflow-hidden border border-zinc-800/50 bg-zinc-900/20 p-10 md:p-14 transition-all duration-500 hover:border-green-electric/30 hover:bg-zinc-900/40"
 			>
 				<!-- Animated top line -->
@@ -258,6 +261,7 @@
 				<!-- Sponsors card -->
 				<a
 					href="/sponsors"
+					use:tilt={8}
 					class="group relative flex-1 overflow-hidden border border-zinc-800/50 bg-zinc-900/20 p-8 md:p-10 transition-all duration-500 hover:border-violet-accent/30 hover:bg-zinc-900/40"
 				>
 					<div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-violet-accent via-violet-accent/50 to-transparent scale-x-0 origin-left transition-transform duration-700 group-hover:scale-x-100"></div>
@@ -279,6 +283,7 @@
 				<!-- Join card -->
 				<a
 					href="/join"
+					use:tilt={8}
 					class="group relative flex-1 overflow-hidden border border-zinc-800/50 bg-zinc-900/20 p-8 md:p-10 transition-all duration-500 hover:border-amber-accent/30 hover:bg-zinc-900/40"
 				>
 					<div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-amber-accent via-amber-accent/50 to-transparent scale-x-0 origin-left transition-transform duration-700 group-hover:scale-x-100"></div>

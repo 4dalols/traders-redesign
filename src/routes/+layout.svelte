@@ -6,6 +6,13 @@
 	import logo from '$lib/assets/logo.png';
 	import favicon from '$lib/assets/favicon.png';
 	import CompetitionApplyBanner from '$lib/components/CompetitionApplyBanner.svelte';
+	import BootScreen from '$lib/components/BootScreen.svelte';
+	import TradingGame from '$lib/components/TradingGame.svelte';
+	import ScrollProgress from '$lib/components/ScrollProgress.svelte';
+	import { game, pnl } from '$lib/fx/game.svelte';
+	import { onMount } from 'svelte';
+	import { afterNavigate } from '$app/navigation';
+	import Lenis from 'lenis';
 
 	let { children } = $props();
 
@@ -18,6 +25,18 @@
 	];
 
 	let mobileMenuOpen = $state(false);
+
+	let lenis: Lenis | undefined;
+	onMount(() => {
+		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+		lenis = new Lenis({ autoRaf: true, lerp: 0.09, anchors: true });
+		return () => lenis?.destroy();
+	});
+	afterNavigate(({ type }) => {
+		if (type !== 'popstate') lenis?.scrollTo(0, { immediate: true, force: true });
+	});
+
+	const traded = $derived(game.position !== 0 || game.cash !== 0);
 </script>
 
 <svelte:head>
@@ -43,6 +62,10 @@
 	</defs>
 </svg>
 
+<BootScreen />
+<TradingGame />
+<div class="crt-overlay" aria-hidden="true"></div>
+
 <!-- Navigation -->
 <nav class="fixed top-0 z-50 w-full bg-[#050505]/80 backdrop-blur-2xl">
 	<div class="mx-auto flex h-20 max-w-[90rem] items-center justify-between px-6 md:px-12">
@@ -66,6 +89,18 @@
 					{/if}
 				</a>
 			{/each}
+			<button
+				onclick={() => (game.open = !game.open)}
+				class="ml-3 border px-3 py-1.5 font-mono text-[12px] tracking-[0.15em] transition-colors
+					{traded
+					? pnl() >= 0
+						? 'border-green-electric/40 text-green-electric'
+						: 'border-rose-400/40 text-rose-400'
+					: 'border-zinc-700 text-zinc-400 hover:border-green-electric/40 hover:text-green-electric'}"
+				title="Press T to trade"
+			>
+				{#if traded}P&amp;L {pnl() >= 0 ? '+' : ''}{pnl().toFixed(2)}{:else}TMIT {game.price.toFixed(2)}{/if}
+			</button>
 		</div>
 
 		<!-- Mobile hamburger -->
@@ -86,6 +121,7 @@
 
 	<!-- Bottom accent line -->
 	<div class="h-[1px] w-full bg-gradient-to-r from-transparent via-green-electric/20 to-transparent"></div>
+	<ScrollProgress />
 
 	<!-- Mobile menu -->
 	{#if mobileMenuOpen}
@@ -177,7 +213,7 @@
 		</div>
 
 		<div class="mt-12 flex flex-col items-start justify-between gap-4 border-t border-zinc-800/30 pt-8 md:flex-row md:items-center">
-			<p class="font-mono text-xs tracking-wider text-zinc-500">&copy; {new Date().getFullYear()} Traders@MIT</p>
+			<p class="font-mono text-xs tracking-wider text-zinc-500">&copy; {new Date().getFullYear()} Traders@MIT <span class="ml-4 text-zinc-600">psst: press <kbd class="border border-zinc-700 px-1 text-green-electric">T</kbd> to trade</span></p>
 			<a
 				href="https://accessibility.mit.edu/"
 				target="_blank"

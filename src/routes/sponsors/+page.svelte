@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { tilt, magnetic } from '$lib/fx/actions';
 	import { tiers, tierLabels, getSponsorsByTier } from '$lib/data/sponsors';
 	import type { Sponsor } from '$lib/data/sponsors';
 
@@ -147,7 +148,8 @@
 								href={sponsor.url}
 								target="_blank"
 								rel="noopener noreferrer"
-								class="group flex items-center justify-center bg-white {tierStyles[tier].padding} border border-zinc-200/10 transition-all duration-300 {tierStyles[tier].borderHover} hover:bg-white hover:shadow-lg hover:shadow-black/10 hover:-translate-y-0.5 {sponsor.logoFill
+								use:tilt={10}
+								class="group flex items-center justify-center bg-white {tierStyles[tier].padding} border border-zinc-200/10 transition-all duration-300 {tierStyles[tier].borderHover} hover:bg-white {sponsor.logoFill
 									? 'min-h-[4.5rem] md:min-h-[5.5rem]'
 									: ''}"
 								title={sponsor.name}
@@ -187,7 +189,7 @@
 		</p>
 		<a
 			href="mailto:traders-sponsorships@mit.edu"
-			class="mt-8 inline-block border border-green-electric/30 bg-green-electric/[0.05] px-8 py-4 font-mono text-sm text-green-electric transition-all duration-300 hover:bg-green-electric/10 hover:border-green-electric/50 hover:shadow-[0_0_30px_rgba(0,220,130,0.1)] active:scale-[0.97]"
+			use:magnetic class="mt-8 inline-block border border-green-electric/30 bg-green-electric/[0.05] px-8 py-4 font-mono text-sm text-green-electric transition-all duration-300 hover:bg-green-electric/10 hover:border-green-electric/50 hover:shadow-[0_0_30px_rgba(0,220,130,0.1)] active:scale-[0.97]"
 		>
 			traders-sponsorships@mit.edu
 		</a>

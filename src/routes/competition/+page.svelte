@@ -8,6 +8,8 @@
 		competitionYear
 	} from '$lib/data/competitionApplications';
 	import competitionHero from '$lib/assets/competition.jpg';
+	import HorizontalGallery from '$lib/components/HorizontalGallery.svelte';
+	import { magnetic, tilt } from '$lib/fx/actions';
 
 	const galleryImages = import.meta.glob('$lib/assets/competition/*.jpg', {
 		eager: true,
@@ -29,35 +31,6 @@
 		day: 'numeric',
 		year: 'numeric',
 		timeZone: 'America/New_York'
-	});
-
-	// ── Gallery carousel ─────────────────────────────────────────
-	let currentSlide = $state(0);
-	let galleryInterval: ReturnType<typeof setInterval>;
-
-	function startAutoRotate() {
-		galleryInterval = setInterval(() => {
-			currentSlide = (currentSlide + 1) % competitionImages.length;
-		}, 4000);
-	}
-
-	function goToSlide(index: number) {
-		currentSlide = index;
-		clearInterval(galleryInterval);
-		startAutoRotate();
-	}
-
-	function nextSlide() {
-		goToSlide((currentSlide + 1) % competitionImages.length);
-	}
-
-	function prevSlide() {
-		goToSlide((currentSlide - 1 + competitionImages.length) % competitionImages.length);
-	}
-
-	$effect(() => {
-		startAutoRotate();
-		return () => clearInterval(galleryInterval);
 	});
 
 	function fadeIn(node: HTMLElement) {
@@ -206,7 +179,7 @@
 					href={applyLink}
 					target="_blank"
 					rel="noopener noreferrer"
-					class="mt-8 inline-block bg-green-electric px-10 py-4 text-sm font-bold uppercase tracking-[0.15em] text-[#050505] transition-all duration-300 hover:bg-green-bright hover:shadow-[0_0_50px_rgba(0,220,130,0.25)] active:scale-[0.97]"
+					use:magnetic class="mt-8 inline-block bg-green-electric px-10 py-4 text-sm font-bold uppercase tracking-[0.15em] text-[#050505] transition-all duration-300 hover:bg-green-bright hover:shadow-[0_0_50px_rgba(0,220,130,0.25)] active:scale-[0.97]"
 				>
 					Apply Now
 				</a>
@@ -242,66 +215,5 @@
 	</div>
 
 	<!-- Photo Gallery -->
-	<div class="fade-in-section" use:fadeIn>
-		<div class="relative mb-10">
-			<span class="font-mono text-xs tracking-[0.25em] uppercase text-green-electric/50 block mb-3">Photos</span>
-			<h2 class="font-display text-3xl md:text-5xl font-[800] tracking-[-0.02em] text-zinc-50">Gallery</h2>
-			<div class="mt-4 h-[2px] w-12 bg-green-electric/40"></div>
-		</div>
-
-		<div class="relative overflow-hidden border border-zinc-800/50 bg-zinc-900/20">
-			<!-- Main image -->
-			<div class="relative aspect-[16/9] w-full">
-				{#each competitionImages as image, i}
-					<img
-						src={getCompImage(image)}
-						alt="Competition photo {i + 1}"
-						class="absolute inset-0 h-full w-full object-cover transition-opacity duration-700
-							{i === currentSlide ? 'opacity-100' : 'opacity-0'}"
-					/>
-				{/each}
-
-				<!-- Navigation arrows -->
-				<button
-					onclick={prevSlide}
-					class="absolute left-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center bg-[#050505]/70 text-zinc-200 backdrop-blur-sm transition-all duration-300 hover:bg-green-electric hover:text-[#050505]"
-					aria-label="Previous image"
-				>
-					<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-					</svg>
-				</button>
-				<button
-					onclick={nextSlide}
-					class="absolute right-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center bg-[#050505]/70 text-zinc-200 backdrop-blur-sm transition-all duration-300 hover:bg-green-electric hover:text-[#050505]"
-					aria-label="Next image"
-				>
-					<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-					</svg>
-				</button>
-
-				<!-- Slide counter -->
-				<div class="absolute bottom-4 right-4 bg-[#050505]/70 backdrop-blur-sm px-4 py-2">
-					<span class="font-mono text-xs text-zinc-300">
-						<span class="text-green-electric">{String(currentSlide + 1).padStart(2, '0')}</span>
-						<span class="text-zinc-600 mx-1">/</span>
-						<span class="text-zinc-500">{String(competitionImages.length).padStart(2, '0')}</span>
-					</span>
-				</div>
-			</div>
-
-			<!-- Dot indicators -->
-			<div class="flex items-center justify-center gap-2 py-5 bg-[#050505]/50">
-				{#each competitionImages as _, i}
-					<button
-						onclick={() => goToSlide(i)}
-						class="h-[3px] transition-all duration-500
-							{i === currentSlide ? 'w-8 bg-green-electric' : 'w-3 bg-zinc-700 hover:bg-zinc-500'}"
-						aria-label="Go to slide {i + 1}"
-					></button>
-				{/each}
-			</div>
-		</div>
-	</div>
+	<HorizontalGallery images={competitionImages.map(getCompImage)} />
 </div>
