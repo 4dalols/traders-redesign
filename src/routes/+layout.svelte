@@ -14,6 +14,7 @@
 	import { afterNavigate, goto } from '$app/navigation';
 	import Lenis from 'lenis';
 	import { lite, reducedMotion } from '$lib/fx/actions';
+	import { whenBooted } from '$lib/fx/ascii';
 
 	let { children } = $props();
 
@@ -44,8 +45,13 @@
 			window.removeEventListener('keydown', onKey);
 		};
 	});
-	afterNavigate(({ type }) => {
+	afterNavigate(async ({ type }) => {
 		if (type !== 'popstate') lenis?.scrollTo(0, { immediate: true, force: true });
+		await whenBooted();
+		for (const h of document.querySelectorAll<HTMLElement>('main h1:not([data-no-decode])')) {
+			h.dataset.sweep = h.innerText;
+			h.classList.add('title-sweep');
+		}
 	});
 
 	const traded = $derived(game.position !== 0 || game.cash !== 0);
