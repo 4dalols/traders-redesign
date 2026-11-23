@@ -6,6 +6,7 @@
 	let wrap: HTMLDivElement;
 	let pre: HTMLPreElement;
 	let glitch: HTMLPreElement;
+	let glowEl: HTMLPreElement;
 	let fontSize = $state(16);
 	let settled = $state(false);
 	const WIDTH = Math.max(...ART.map((l) => l.length));
@@ -27,6 +28,7 @@
 		let last = 0;
 		let k = 0; // |wave vector| in rad per px
 		let glitching = false;
+		let boot: Map<string, [string, string]> | null = null;
 
 		/**
 		 * After assembly the logo is plain text painted with a diagonal repeating gradient
@@ -62,33 +64,53 @@
 
 		const ro = new ResizeObserver(() => {
 			fontSize = Math.min(28, wrap.clientWidth / (WIDTH * 0.62));
-			if (settled) requestAnimationFrame(layoutGradient);
+			requestAnimationFrame(layoutGradient);
 		});
 		ro.observe(wrap);
 
+		/**
+		 * Resolved characters are plain text, so they take the same shimmer gradient and glow
+		 * as the settled logo; unresolved cells are opaque coloured glyphs drawn over it.
+		 */
 		const renderAssembly = (t: number) => {
 			let out = '';
+			let glow = '';
 			ART.forEach((line, r) => {
 				[...line].forEach((ch, c) => {
-					if (ch === ' ') return void (out += ' ');
+					if (ch === ' ') {
+						out += ' ';
+						glow += ' ';
+						return;
+					}
 					const near = Math.hypot((c - mouse.col) * 0.5, r - mouse.row) < 2.2;
 					if (t - start < resolveAt[r][c]) {
-						out += Math.random() < 0.55 ? `<span style="color:#00DC8255">${esc(randomGlyph())}</span>` : ' ';
+						glow += ' ';
+						const cell = boot?.get(`${r},${c}`);
+						if (cell) {
+							if (t > start && Math.random() < 0.25) cell[0] = randomGlyph();
+							out += `<span style="color:${cell[1]}">${esc(cell[0])}</span>`;
+						} else
+							out +=
+								Math.random() < 0.55 ? `<span style="color:#034c2e">${esc(randomGlyph())}</span>` : ' ';
 					} else if (near && Math.random() < 0.5) {
+						glow += ' ';
 						out += `<span style="color:#8B5CF6">${esc(randomGlyph())}</span>`;
 					} else {
-						out += `<span style="color:hsl(155 100% ${shade(c / 5 + r * 0.4 - t / 450).toFixed(1)}%)">${ch}</span>`;
+						out += ch;
+						glow += ch;
 					}
 				});
 				out += '\n';
+				glow += '\n';
 			});
 			pre.innerHTML = out;
+			glowEl.textContent = glow;
 		};
 
 		const settle = (t: number) => {
 			pre.textContent = TEXT;
+			glowEl.textContent = TEXT;
 			settled = true;
-			layoutGradient();
 			setShift(t);
 		};
 
@@ -112,13 +134,13 @@
 			raf = requestAnimationFrame(frame);
 			if (!visible || t - last < 33) return;
 			last = t;
+			setShift(t);
 			if (!settled) {
 				if (t - start >= assembleEnd) {
 					settle(t);
 					if (cheap) return cancelAnimationFrame(raf);
 				} else return renderAssembly(t);
 			}
-			setShift(t);
 			if (glitching) glitching = renderGlitch();
 		};
 
@@ -135,21 +157,47 @@
 		};
 		const io = new IntersectionObserver(([e]) => (visible = e.isIntersecting));
 
-		whenBooted().then(() => {
-			const fromBoot = handoff.active;
-			handoff.active = false;
-			start = performance.now();
-			resolveAt = ART.map((row) => [...row].map((_, c) => (still ? 0 : c * 18 + Math.random() * 600)));
-			assembleEnd = Math.max(...resolveAt.flat()) + 50;
-			if (still) return settle(start);
-			// the boot dissolve already resolved the logo in place
-			if (fromBoot) settle(start);
+		let running = false;
+		const run = () => {
+			running = true;
+			layoutGradient();
 			io.observe(pre);
-			if (!cheap) window.addEventListener('pointermove', onMove, { passive: true });
 			raf = requestAnimationFrame(frame);
+		};
+		const plan = (from: number, gap: number, spread: number) => {
+			resolveAt = ART.map((row) => [...row].map((_, c) => from + c * gap + Math.random() * spread));
+			assembleEnd = Math.max(...resolveAt.flat()) + 50;
+		};
+
+		// boot dissolve hands over its glyphs in the logo cells, then asks for them to resolve
+		handoff.begin = (cells) => {
+			boot = cells;
+			start = performance.now();
+			resolveAt = ART.map((row) => [...row].map(() => Infinity));
+			assembleEnd = Infinity;
+			run();
+			renderAssembly(start);
+		};
+		handoff.resolve = (instant) => {
+			if (!boot) return;
+			if (instant) plan(0, 0, 0);
+			else plan(performance.now() - start, 12, 250);
+		};
+
+		whenBooted().then(() => {
+			if (!cheap) window.addEventListener('pointermove', onMove, { passive: true });
+			if (running) return;
+			start = performance.now();
+			if (still) {
+				layoutGradient();
+				return settle(start);
+			}
+			plan(0, 18, 600);
+			run();
 		});
 
 		return () => {
+			handoff.begin = handoff.resolve = undefined;
 			cancelAnimationFrame(raf);
 			ro.disconnect();
 			io.disconnect();
@@ -159,12 +207,11 @@
 </script>
 
 <div bind:this={wrap} class="relative w-full" style="font-size: {fontSize}px">
-	{#if settled}
-		<pre class="ascii-logo glow" aria-hidden="true">{TEXT}</pre>
-	{/if}
+	<pre bind:this={glowEl} class="ascii-logo glow" aria-hidden="true"></pre>
 	<pre
 		bind:this={pre}
-		class="ascii-logo relative {settled ? 'shimmer' : 'assembling'}"
+		data-logo
+		class="ascii-logo shimmer relative"
 		style="min-height: {ART.length * LH}em"
 		aria-hidden="true"></pre>
 	<pre bind:this={glitch} class="ascii-logo glitch" aria-hidden="true"></pre>
@@ -180,9 +227,6 @@
 		font-family: ui-monospace, Menlo, Consolas, 'DejaVu Sans Mono', 'Courier New', monospace;
 		line-height: 1.05;
 		margin: 0;
-	}
-	.assembling :global(span) {
-		text-shadow: 0 0 6px rgba(0, 220, 130, 0.4);
 	}
 	.glow {
 		position: absolute;
