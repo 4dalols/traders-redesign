@@ -162,6 +162,8 @@
 								>
 									<img
 										src={getSponsorLogo(sponsor.logo)}
+										loading="lazy"
+										decoding="async"
 										alt={sponsor.name}
 										class="{sponsor.logoFill
 											? 'h-12 w-full max-w-full object-contain md:h-16'

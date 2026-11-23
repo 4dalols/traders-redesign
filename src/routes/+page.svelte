@@ -158,6 +158,7 @@
 				<a href={sponsor.url} target="_blank" rel="noopener noreferrer" class="mx-8 shrink-0">
 					<img
 						src={getSponsorLogo(sponsor.logo)}
+						decoding="async"
 						alt={sponsor.name}
 						class="h-20 w-auto max-w-[220px] object-contain opacity-30 transition-opacity duration-300 hover:opacity-60 {sponsor.logo !== 'hrt.png' ? 'brightness-0 invert' : ''}"
 						style={sponsor.logo === 'hrt.png' ? 'filter: url(#remove-white) brightness(0) invert(1)' : ''}
@@ -184,6 +185,8 @@
 			<div class="relative overflow-hidden">
 				<img
 					src={groupPhoto}
+					loading="lazy"
+					decoding="async"
 					alt="Traders@MIT team"
 					class="w-full object-cover"
 				/>
