@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, tick } from 'svelte';
 	import { LOGO_ART as ART, GLYPHS, esc } from '$lib/fx/ascii';
 
 	const LINES: [string, string][] = [
@@ -12,83 +12,73 @@
 	];
 
 	let show = $state(true);
-	let leaving = $state(false);
 	let lineCount = $state(0);
 	let pre = $state<HTMLPreElement>();
-	let inner = $state<HTMLDivElement>();
 	let dust = $state<HTMLCanvasElement>();
+	let dusting = $state(false);
 
-	type Bit = { ch: string; x: number; y: number; vx: number; vy: number; delay: number; color: string; font: string };
-
-	/** Snapshot every visible character on the boot screen. */
-	function collect(): Bit[] {
-		const bits: Bit[] = [];
-		if (!inner) return bits;
-		const cx = innerWidth / 2;
-		const cy = innerHeight / 2;
-		const walker = document.createTreeWalker(inner, NodeFilter.SHOW_TEXT);
-		const range = document.createRange();
-		for (let n = walker.nextNode(); n; n = walker.nextNode()) {
-			const el = n.parentElement!;
-			if (el.closest('.boot-skip')) continue;
-			const cs = getComputedStyle(el);
-			const font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
-			const text = n.textContent ?? '';
-			for (let i = 0; i < text.length; i++) {
-				if (!text[i].trim()) continue;
-				range.setStart(n, i);
-				range.setEnd(n, i + 1);
-				const r = range.getBoundingClientRect();
-				if (!r.width) continue;
-				const x = r.left + r.width / 2;
-				const y = r.top + r.height / 2;
-				const a = Math.atan2(y - cy, x - cx) + (Math.random() - 0.5) * 1.2;
-				const sp = 0.15 + Math.random() * 0.45;
-				bits.push({
-					ch: text[i],
-					x,
-					y,
-					vx: Math.cos(a) * sp,
-					vy: Math.sin(a) * sp - 0.08,
-					delay: Math.random() * 350,
-					color: cs.color,
-					font
-				});
-			}
-		}
-		return bits;
-	}
-
-	/** Break the screen into characters that scatter and fade. */
-	function dissolve(done: () => void) {
-		const bits = collect();
+	/** Cover the screen with ASCII, then drop characters at random to reveal the page. */
+	function dissolve(covered: () => void, done: () => void) {
 		const c = dust;
 		const ctx = c?.getContext('2d');
-		if (!c || !ctx || !bits.length) return done();
+		if (!c || !ctx) {
+			covered();
+			return done();
+		}
+		const W = innerWidth;
+		const H = innerHeight;
 		const dpr = Math.min(devicePixelRatio || 1, 2);
-		c.width = innerWidth * dpr;
-		c.height = innerHeight * dpr;
+		c.width = W * dpr;
+		c.height = H * dpr;
 		ctx.scale(dpr, dpr);
+		ctx.font = '13px ui-monospace, Menlo, Consolas, monospace';
 		ctx.textAlign = 'center';
 		ctx.textBaseline = 'middle';
-		const LIFE = 900;
+		const cw = Math.ceil(ctx.measureText('M').width) + 1;
+		const ch = 16;
+		const cols = Math.ceil(W / cw);
+		const rows = Math.ceil(H / ch);
+		const n = cols * rows;
+		const FILL = 280;
+		const appear = new Float32Array(n);
+		const vanish = new Float32Array(n);
+		const state = new Uint8Array(n); // 0 hidden, 1 shown, 2 cleared
+		for (let i = 0; i < n; i++) {
+			appear[i] = Math.random() * FILL;
+			vanish[i] = FILL + 120 + Math.random() ** 0.8 * 1500;
+		}
+		const shades = ['#00DC82', '#00DC82', '#00a865', '#0b6b45', '#8cffd0'];
+		const draw = (i: number) => {
+			const x = (i % cols) * cw;
+			const y = ((i / cols) | 0) * ch;
+			ctx.fillStyle = '#030303';
+			ctx.fillRect(x, y, cw, ch);
+			ctx.fillStyle = shades[(Math.random() * shades.length) | 0];
+			ctx.fillText(GLYPHS[(Math.random() * GLYPHS.length) | 0], x + cw / 2, y + ch / 2);
+		};
+		let isCovered = false;
 		const t0 = performance.now();
 		const step = (now: number) => {
 			const t = now - t0;
-			ctx.clearRect(0, 0, innerWidth, innerHeight);
-			let alive = false;
-			for (const b of bits) {
-				const k = Math.max(0, t - b.delay);
-				const p = k / LIFE;
-				if (p >= 1) continue;
-				alive = true;
-				if (k > 0 && Math.random() < 0.15) b.ch = GLYPHS[(Math.random() * GLYPHS.length) | 0];
-				ctx.globalAlpha = 1 - p * p;
-				ctx.fillStyle = b.color;
-				ctx.font = b.font;
-				ctx.fillText(b.ch, b.x + b.vx * k * (1 + p), b.y + b.vy * k * (1 + p));
+			let left = 0;
+			for (let i = 0; i < n; i++) {
+				if (state[i] === 0 && t >= appear[i]) {
+					draw(i);
+					state[i] = 1;
+				}
+				if (state[i] === 1) {
+					if (t >= vanish[i]) {
+						ctx.clearRect((i % cols) * cw, ((i / cols) | 0) * ch, cw, ch);
+						state[i] = 2;
+					} else if (Math.random() < 0.03) draw(i);
+				}
+				if (state[i] !== 2) left++;
 			}
-			if (alive) requestAnimationFrame(step);
+			if (!isCovered && t >= FILL) {
+				isCovered = true;
+				covered();
+			}
+			if (left) requestAnimationFrame(step);
 			else done();
 		};
 		requestAnimationFrame(step);
@@ -113,14 +103,18 @@
 		let raf = 0;
 		let done = false;
 
-		const finish = () => {
+		const finish = async () => {
 			if (done) return;
 			done = true;
-			dissolve(() => {
-				show = false;
-				html.classList.add('booted');
-			});
-			leaving = true;
+			dusting = true;
+			await tick();
+			dissolve(
+				() => {
+					show = false;
+					html.classList.add('booted');
+				},
+				() => (dusting = false)
+			);
 		};
 
 		const frame = (now: number) => {
@@ -163,8 +157,8 @@
 </script>
 
 {#if show}
-	<div class="boot crt-screen" class:leaving aria-hidden="true">
-		<div class="boot-inner" bind:this={inner}>
+	<div class="boot crt-screen" aria-hidden="true">
+		<div class="boot-inner">
 			<div class="boot-lines">
 				{#each LINES.slice(0, lineCount) as [label, status]}
 					<div>
@@ -178,6 +172,8 @@
 			<div class="boot-skip">click or press any key to skip</div>
 		</div>
 	</div>
+{/if}
+{#if dusting}
 	<canvas bind:this={dust} class="boot-dust" aria-hidden="true"></canvas>
 {/if}
 
@@ -191,17 +187,9 @@
 		align-items: center;
 		justify-content: center;
 		font-family: var(--font-mono);
-		transition: opacity 0.7s ease 0.1s;
 	}
-	:global(html.booted) .boot,
-	:global(html.booted) .boot-dust {
+	:global(html.booted) .boot {
 		display: none;
-	}
-	.boot.leaving {
-		opacity: 0;
-	}
-	.boot.leaving .boot-inner {
-		visibility: hidden;
 	}
 	.boot-dust {
 		position: fixed;
