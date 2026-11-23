@@ -87,7 +87,7 @@
 						glow += ' ';
 						const cell = boot?.get(`${r},${c}`);
 						if (cell) {
-							if (t > start && Math.random() < 0.25) cell[0] = randomGlyph();
+							if (t > start && Math.random() < (assembleEnd === Infinity ? 0.45 : 0.25)) cell[0] = randomGlyph();
 							out += `<span style="color:${cell[1]}">${esc(cell[0])}</span>`;
 						} else
 							out +=
@@ -132,7 +132,9 @@
 
 		const frame = (t: number) => {
 			raf = requestAnimationFrame(frame);
-			if (!visible || t - last < 33) return;
+			// held boot glyphs only flicker, so they need fewer frames than the resolve sweep
+			const gap = assembleEnd === Infinity ? 66 : 33;
+			if (!visible || t - last < gap) return;
 			last = t;
 			setShift(t);
 			if (!settled) {

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { lite, reducedMotion } from '$lib/fx/actions';
+	import { whenBooted } from '$lib/fx/ascii';
 	import logoUrl from '$lib/assets/logo.png';
 
 	const W = 70;
@@ -235,8 +236,9 @@
 		loadMask().then((g) => {
 			if (!alive) return;
 			geo = g;
-			if (reducedMotion()) render();
-			else raf = requestAnimationFrame(frame);
+			render();
+			// hold still under the boot dissolve; the spin starts once the page is revealed
+			if (!reducedMotion()) whenBooted().then(() => alive && (raf = requestAnimationFrame(frame)));
 		});
 
 		return () => {

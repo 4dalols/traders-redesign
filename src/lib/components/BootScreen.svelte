@@ -148,7 +148,11 @@
 		};
 
 		const t0 = performance.now();
+		let last = 0;
 		const step = (now: number) => {
+			// ~30 updates a second is plenty for characters popping off, and halves the repaints
+			if (now - last < 30 && !skipDust) return void requestAnimationFrame(step);
+			last = now;
 			const t = now - t0;
 			let left = 0;
 			for (const k of cells) {
