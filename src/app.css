@@ -233,7 +233,7 @@ h1:not([data-no-decode]), h2 {
 
 /* Page titles: white → green → violet gradient flowing through the text */
 .title-drift {
-	background: linear-gradient(90deg, #fafafa, #00dc82, #8b5cf6, #fafafa, #00dc82) 0 0 / 300% 100%;
+	background: linear-gradient(90deg, #fafafa, #00dc82, #8b5cf6, #fafafa) 0 0 / 300% 100%;
 	-webkit-background-clip: text;
 	background-clip: text;
 	-webkit-text-fill-color: transparent;
