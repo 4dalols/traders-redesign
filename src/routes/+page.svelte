@@ -1,9 +1,11 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import groupPhoto from '$lib/assets/group.jpg';
 	import { sponsors } from '$lib/data/sponsors';
 	import AsciiLogo from '$lib/components/AsciiLogo.svelte';
+	import AsciiT from '$lib/components/AsciiT.svelte';
 	import Odometer from '$lib/components/Odometer.svelte';
-	import { magnetic, tilt } from '$lib/fx/actions';
+	import { ripple, tilt } from '$lib/fx/actions';
 
 	// Dynamic imports for sponsor logos (for ticker)
 	const sponsorLogos = import.meta.glob('$lib/assets/sponsors/*.{png,svg,jpg}', {
@@ -75,7 +77,8 @@
 	<div class="absolute left-[-10%] bottom-[-10%] h-[500px] w-[500px] rounded-full bg-violet-accent/[0.025] blur-[150px]"></div>
 
 	<div class="relative z-10 w-full px-6 md:px-12 lg:px-16 py-16 md:py-24">
-		<div class="mx-auto max-w-[85rem]">
+		<div class="mx-auto grid max-w-[85rem] items-center gap-12 lg:grid-cols-12">
+			<div class="lg:col-span-7">
 			<!-- Badge -->
 			<div
 				class="mb-10 inline-flex items-center gap-3 rounded-full border border-green-electric/20 bg-green-electric/[0.05] px-5 py-2.5"
@@ -99,7 +102,7 @@
 			</h1>
 
 			<!-- Tagline — offset to the right for asymmetry -->
-			<div class="mt-14 md:mt-20 md:ml-auto md:max-w-lg lg:max-w-xl md:mr-[5%]">
+			<div class="mt-12 md:mt-14 md:max-w-xl">
 				<p class="text-lg md:text-xl lg:text-2xl text-zinc-300 leading-relaxed font-light">
 					Partnering with leading trading firms to host the
 					<span class="text-zinc-100 font-medium">largest intercollegiate trading competition</span>.
@@ -108,8 +111,8 @@
 				<!-- CTAs — sharp, bold buttons -->
 				<div class="mt-10 flex flex-wrap items-center gap-5">
 					<a
-						href="/competition"
-						use:magnetic
+						href="{base}/competition"
+						use:ripple
 						class="group relative inline-flex items-center gap-3 bg-green-electric px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-[#050505] transition-all duration-300 hover:bg-green-bright hover:shadow-[0_0_50px_rgba(0,220,130,0.25)] active:scale-[0.97]"
 					>
 						<span>Competition</span>
@@ -128,13 +131,17 @@
 						</svg>
 					</a>
 					<a
-						href="/about"
-						use:magnetic
+						href="{base}/about"
+						use:ripple
 						class="inline-flex items-center px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-zinc-300 border border-zinc-600 transition-all duration-300 hover:text-zinc-100 hover:border-zinc-400 active:scale-[0.97]"
 					>
 						About Us
 					</a>
 				</div>
+			</div>
+			</div>
+			<div class="lg:col-span-5">
+				<AsciiT />
 			</div>
 		</div>
 	</div>
@@ -226,7 +233,7 @@
 		<div class="fade-in-section grid md:grid-cols-12 gap-5" use:fadeIn>
 			<!-- Large card — Compete -->
 			<a
-				href="/competition"
+				href="{base}/competition"
 				use:tilt={8}
 				class="group relative md:col-span-7 overflow-hidden border border-zinc-800/50 bg-zinc-900/20 p-10 md:p-14 transition-all duration-500 hover:border-green-electric/30 hover:bg-zinc-900/40"
 			>
@@ -260,7 +267,7 @@
 			<div class="md:col-span-5 flex flex-col gap-5">
 				<!-- Sponsors card -->
 				<a
-					href="/sponsors"
+					href="{base}/sponsors"
 					use:tilt={8}
 					class="group relative flex-1 overflow-hidden border border-zinc-800/50 bg-zinc-900/20 p-8 md:p-10 transition-all duration-500 hover:border-violet-accent/30 hover:bg-zinc-900/40"
 				>
@@ -282,7 +289,7 @@
 
 				<!-- Join card -->
 				<a
-					href="/join"
+					href="{base}/join"
 					use:tilt={8}
 					class="group relative flex-1 overflow-hidden border border-zinc-800/50 bg-zinc-900/20 p-8 md:p-10 transition-all duration-500 hover:border-amber-accent/30 hover:bg-zinc-900/40"
 				>

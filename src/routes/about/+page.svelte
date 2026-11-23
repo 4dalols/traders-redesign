@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { tilt, magnetic } from '$lib/fx/actions';
+	import { tilt } from '$lib/fx/actions';
 	import { members } from '$lib/data/members';
 	import aboutImage from '$lib/assets/about.jpeg';
 

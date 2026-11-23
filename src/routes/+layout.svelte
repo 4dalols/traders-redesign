@@ -1,17 +1,17 @@
 <script lang="ts">
 	import '../app.css';
 	import { page } from '$app/stores';
+	import { base } from '$app/paths';
 	import { slide } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
 	import logo from '$lib/assets/logo.png';
 	import favicon from '$lib/assets/favicon.png';
 	import CompetitionApplyBanner from '$lib/components/CompetitionApplyBanner.svelte';
 	import BootScreen from '$lib/components/BootScreen.svelte';
-	import TradingGame from '$lib/components/TradingGame.svelte';
 	import ScrollProgress from '$lib/components/ScrollProgress.svelte';
-	import { game, pnl } from '$lib/fx/game.svelte';
+	import { game, pnl, startFeed } from '$lib/fx/game.svelte';
 	import { onMount } from 'svelte';
-	import { afterNavigate } from '$app/navigation';
+	import { afterNavigate, goto } from '$app/navigation';
 	import Lenis from 'lenis';
 	import { tick } from 'svelte';
 	import { decode } from '$lib/fx/actions';
@@ -31,9 +31,20 @@
 
 	let lenis: Lenis | undefined;
 	onMount(() => {
-		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-		lenis = new Lenis({ autoRaf: true, lerp: 0.09, anchors: true });
-		return () => lenis?.destroy();
+		startFeed();
+		const onKey = (e: KeyboardEvent) => {
+			const el = e.target as HTMLElement;
+			if (el.isContentEditable || /INPUT|TEXTAREA|SELECT/.test(el.tagName)) return;
+			if (e.metaKey || e.ctrlKey || e.altKey || e.key.toLowerCase() !== 't') return;
+			goto(base + ($page.route.id === '/trade' ? '/' : '/trade'));
+		};
+		window.addEventListener('keydown', onKey);
+		if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+			lenis = new Lenis({ autoRaf: true, lerp: 0.09, anchors: true });
+		return () => {
+			lenis?.destroy();
+			window.removeEventListener('keydown', onKey);
+		};
 	});
 	let decoders: { destroy(): void }[] = [];
 	afterNavigate(async ({ type }) => {
@@ -73,13 +84,12 @@
 </svg>
 
 <BootScreen />
-<TradingGame />
 <div class="crt-overlay" aria-hidden="true"></div>
 
 <!-- Navigation -->
 <nav class="fixed top-0 z-50 w-full bg-[#050505]/80 backdrop-blur-2xl">
 	<div class="mx-auto flex h-20 max-w-[90rem] items-center justify-between px-6 md:px-12">
-		<a href="/" class="flex items-center gap-3 transition-opacity hover:opacity-80">
+		<a href="{base}/" class="flex items-center gap-3 transition-opacity hover:opacity-80">
 			<img src={logo} alt="Traders@MIT" class="h-8 w-auto" />
 		</a>
 
@@ -87,20 +97,20 @@
 		<div class="hidden items-center gap-1 md:flex">
 			{#each navItems as item}
 				<a
-					href={item.href}
+					href="{base}{item.href}"
 					class="relative px-5 py-2 font-mono text-[15px] font-medium uppercase tracking-[0.2em] transition-colors duration-300
-						{$page.url.pathname === item.href
+						{$page.route.id === item.href
 						? 'text-green-electric'
 						: 'text-zinc-400 hover:text-zinc-200'}"
 				>
 					{item.label}
-					{#if $page.url.pathname === item.href}
+					{#if $page.route.id === item.href}
 						<span class="absolute bottom-0 left-1/2 h-[2px] w-4 -translate-x-1/2 bg-green-electric"></span>
 					{/if}
 				</a>
 			{/each}
-			<button
-				onclick={() => (game.open = !game.open)}
+			<a
+				href="{base}/trade"
 				class="ml-3 border px-3 py-1.5 font-mono text-[12px] tracking-[0.15em] transition-colors
 					{traded
 					? pnl() >= 0
@@ -110,7 +120,7 @@
 				title="Press T to trade"
 			>
 				{#if traded}P&amp;L {pnl() >= 0 ? '+' : ''}{pnl().toFixed(2)}{:else}TMIT {game.price.toFixed(2)}{/if}
-			</button>
+			</a>
 		</div>
 
 		<!-- Mobile hamburger -->
@@ -142,14 +152,14 @@
 			<div class="space-y-1 px-6 py-4">
 				{#each navItems as item}
 					<a
-						href={item.href}
+						href="{base}{item.href}"
 						onclick={() => (mobileMenuOpen = false)}
 						class="flex items-center gap-3 py-3 font-mono text-[15px] font-medium uppercase tracking-[0.2em] transition-colors
-							{$page.url.pathname === item.href
+							{$page.route.id === item.href
 							? 'text-green-electric'
 							: 'text-zinc-400 hover:text-zinc-200'}"
 					>
-						{#if $page.url.pathname === item.href}
+						{#if $page.route.id === item.href}
 							<span class="h-[2px] w-3 bg-green-electric"></span>
 						{/if}
 						{item.label}
@@ -213,7 +223,7 @@
 			<div class="flex flex-wrap gap-8">
 				{#each navItems as item}
 					<a
-						href={item.href}
+						href="{base}{item.href}"
 						class="font-mono text-xs uppercase tracking-[0.2em] text-zinc-500 transition-colors duration-300 hover:text-zinc-300"
 					>
 						{item.label}
@@ -223,7 +233,7 @@
 		</div>
 
 		<div class="mt-12 flex flex-col items-start justify-between gap-4 border-t border-zinc-800/30 pt-8 md:flex-row md:items-center">
-			<p class="font-mono text-xs tracking-wider text-zinc-500">&copy; {new Date().getFullYear()} Traders@MIT <span class="ml-4 text-zinc-600">psst: press <kbd class="border border-zinc-700 px-1 text-green-electric">T</kbd> to trade</span></p>
+			<p class="font-mono text-xs tracking-wider text-zinc-500">&copy; {new Date().getFullYear()} Traders@MIT <a href="{base}/trade" class="ml-4 text-zinc-600 hover:text-green-electric">psst: press <kbd class="border border-zinc-700 px-1 text-green-electric">T</kbd> to trade</a></p>
 			<a
 				href="https://accessibility.mit.edu/"
 				target="_blank"

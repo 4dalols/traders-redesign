@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { ripple } from '$lib/fx/actions';
 	import { competitionImages } from '$lib/data/competition';
 	import {
 		competitionApplicationDeadline,
@@ -8,7 +9,6 @@
 		competitionYear
 	} from '$lib/data/competitionApplications';
 	import competitionHero from '$lib/assets/competition.jpg';
-	import { magnetic } from '$lib/fx/actions';
 
 	const galleryImages = import.meta.glob('$lib/assets/competition/*.jpg', {
 		eager: true,
@@ -207,7 +207,8 @@
 					href={applyLink}
 					target="_blank"
 					rel="noopener noreferrer"
-					use:magnetic class="mt-8 inline-block bg-green-electric px-10 py-4 text-sm font-bold uppercase tracking-[0.15em] text-[#050505] transition-all duration-300 hover:bg-green-bright hover:shadow-[0_0_50px_rgba(0,220,130,0.25)] active:scale-[0.97]"
+					use:ripple
+					class="mt-8 inline-block bg-green-electric px-10 py-4 text-sm font-bold uppercase tracking-[0.15em] text-[#050505] transition-all duration-300 hover:bg-green-bright hover:shadow-[0_0_50px_rgba(0,220,130,0.25)] active:scale-[0.97]"
 				>
 					Apply Now
 				</a>

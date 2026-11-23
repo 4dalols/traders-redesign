@@ -16,11 +16,16 @@
 	const head = $derived(pts[Math.min(pts.length - 1, Math.round(progress * (pts.length - 1)))]);
 
 	onMount(() => {
-		const update = () => {
+		let queued = false;
+		const measure = () => {
+			queued = false;
 			const max = document.documentElement.scrollHeight - window.innerHeight;
 			progress = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
 		};
-		update();
+		const update = () => {
+			if (!queued) (queued = true), requestAnimationFrame(measure);
+		};
+		measure();
 		window.addEventListener('scroll', update, { passive: true });
 		window.addEventListener('resize', update);
 		return () => {
@@ -51,10 +56,18 @@
 		d={path}
 		fill="none"
 		stroke="url(#price-line)"
+		stroke-width="5"
+		stroke-opacity="0.25"
+		vector-effect="non-scaling-stroke"
+		clip-path="url(#price-clip)"
+	/>
+	<path
+		d={path}
+		fill="none"
+		stroke="url(#price-line)"
 		stroke-width="1.8"
 		vector-effect="non-scaling-stroke"
 		clip-path="url(#price-clip)"
-		style="filter: drop-shadow(0 0 3px rgba(0,220,130,0.8))"
 	/>
 	{#if progress > 0.002}
 		<circle cx={head[0]} cy={head[1]} r="2.5" fill="#fff" />

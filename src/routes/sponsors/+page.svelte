@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { tilt, magnetic } from '$lib/fx/actions';
+	import { ripple, tilt } from '$lib/fx/actions';
 	import { tiers, tierLabels, getSponsorsByTier } from '$lib/data/sponsors';
 	import type { Sponsor } from '$lib/data/sponsors';
 
@@ -189,7 +189,8 @@
 		</p>
 		<a
 			href="mailto:traders-sponsorships@mit.edu"
-			use:magnetic class="mt-8 inline-block border border-green-electric/30 bg-green-electric/[0.05] px-8 py-4 font-mono text-sm text-green-electric transition-all duration-300 hover:bg-green-electric/10 hover:border-green-electric/50 hover:shadow-[0_0_30px_rgba(0,220,130,0.1)] active:scale-[0.97]"
+			use:ripple
+			class="mt-8 inline-block border border-green-electric/30 bg-green-electric/[0.05] px-8 py-4 font-mono text-sm text-green-electric transition-all duration-300 hover:bg-green-electric/10 hover:border-green-electric/50 hover:shadow-[0_0_30px_rgba(0,220,130,0.1)] active:scale-[0.97]"
 		>
 			traders-sponsorships@mit.edu
 		</a>

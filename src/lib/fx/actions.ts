@@ -3,38 +3,10 @@ const finePointer = () =>
 export const reducedMotion = () =>
 	typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-/** 3D tilt toward the cursor with a holographic foil shine (expects the .holo class for the shine). */
-export function tilt(node: HTMLElement, max = 14) {
-	if (!finePointer() || reducedMotion()) return;
-	node.classList.add('tilt-card');
-	const move = (e: PointerEvent) => {
-		const r = node.getBoundingClientRect();
-		const x = (e.clientX - r.left) / r.width;
-		const y = (e.clientY - r.top) / r.height;
-		node.style.transform = `perspective(800px) rotateX(${(0.5 - y) * max}deg) rotateY(${(x - 0.5) * max}deg) scale(1.04)`;
-		node.style.setProperty('--mx', `${x * 100}%`);
-		node.style.setProperty('--my', `${y * 100}%`);
-		node.style.setProperty('--hue', `${Math.round((x + y) * 180)}`);
-		node.classList.add('tilt-active');
-	};
-	const leave = () => {
-		node.style.transform = '';
-		node.classList.remove('tilt-active');
-	};
-	node.addEventListener('pointermove', move);
-	node.addEventListener('pointerleave', leave);
-	return {
-		destroy() {
-			node.removeEventListener('pointermove', move);
-			node.removeEventListener('pointerleave', leave);
-		}
-	};
-}
-
-/** Pulls the element toward the cursor when it is near, and ripples on click. */
-export function magnetic(node: HTMLElement, strength = 0.35) {
-	node.classList.add('magnetic');
-	const ripple = (e: PointerEvent) => {
+/** Expanding ripple from the click point. */
+export function ripple(node: HTMLElement) {
+	node.classList.add('ripple-host');
+	const down = (e: PointerEvent) => {
 		const r = node.getBoundingClientRect();
 		const s = document.createElement('span');
 		s.className = 'ripple';
@@ -45,26 +17,45 @@ export function magnetic(node: HTMLElement, strength = 0.35) {
 		node.appendChild(s);
 		setTimeout(() => s.remove(), 700);
 	};
-	node.addEventListener('pointerdown', ripple);
-	if (!finePointer() || reducedMotion())
-		return { destroy: () => node.removeEventListener('pointerdown', ripple) };
+	node.addEventListener('pointerdown', down);
+	return { destroy: () => node.removeEventListener('pointerdown', down) };
+}
 
-	const radius = 90;
+/** 3D tilt toward the cursor with a holographic foil shine (expects the .holo class for the shine). */
+export function tilt(node: HTMLElement, max = 14) {
+	if (!finePointer() || reducedMotion()) return;
+	node.classList.add('tilt-card');
+	let pending: PointerEvent | null = null;
 	const move = (e: PointerEvent) => {
-		const r = node.getBoundingClientRect();
-		const cx = r.left + r.width / 2;
-		const cy = r.top + r.height / 2;
-		const dx = e.clientX - cx;
-		const dy = e.clientY - cy;
-		const near =
-			Math.abs(dx) < r.width / 2 + radius && Math.abs(dy) < r.height / 2 + radius;
-		node.style.transform = near ? `translate(${dx * strength}px, ${dy * strength}px)` : '';
+		if (!pending) requestAnimationFrame(apply);
+		pending = e;
 	};
-	window.addEventListener('pointermove', move);
+	const apply = () => {
+		const e = pending;
+		pending = null;
+		if (!e || !node.classList.contains('tilt-armed')) return;
+		const r = node.getBoundingClientRect();
+		const x = (e.clientX - r.left) / r.width;
+		const y = (e.clientY - r.top) / r.height;
+		node.style.transform = `perspective(800px) rotateX(${(0.5 - y) * max}deg) rotateY(${(x - 0.5) * max}deg) scale(1.04)`;
+		node.style.setProperty('--mx', `${x * 100}%`);
+		node.style.setProperty('--my', `${y * 100}%`);
+		node.classList.add('tilt-active');
+	};
+	const enter = () => node.classList.add('tilt-armed');
+	const leave = () => {
+		node.classList.remove('tilt-armed');
+		node.style.transform = '';
+		node.classList.remove('tilt-active');
+	};
+	node.addEventListener('pointerenter', enter);
+	node.addEventListener('pointermove', move);
+	node.addEventListener('pointerleave', leave);
 	return {
 		destroy() {
-			window.removeEventListener('pointermove', move);
-			node.removeEventListener('pointerdown', ripple);
+			node.removeEventListener('pointerenter', enter);
+			node.removeEventListener('pointermove', move);
+			node.removeEventListener('pointerleave', leave);
 		}
 	};
 }
