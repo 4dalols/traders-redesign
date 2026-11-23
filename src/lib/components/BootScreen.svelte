@@ -27,15 +27,14 @@
 		target: string;
 		col: number;
 		row: number;
-		resolveAt: number;
-		state: number; // 0 hidden, 1 shown, 2 cleared, 3 resolved
+		state: number; // 0 hidden, 1 shown, 2 cleared
 		glyph: string;
 		color: string;
 	};
 
 	/** Character grid of the home hero logo, if it is on screen. */
 	function logoBox() {
-		const el = document.querySelector<HTMLPreElement>('pre.ascii-logo.assembling');
+		const el = document.querySelector<HTMLPreElement>('pre[data-logo]');
 		if (!el) return null;
 		const r = el.getBoundingClientRect();
 		if (!r.width || r.bottom < 0 || r.top > innerHeight) return null;
@@ -55,7 +54,6 @@
 	}
 
 	// Same wave as the settled hero logo (AsciiLogo).
-	const shade = (phase: number) => 43 + 14 * Math.max(0, Math.sin(phase)) ** 3;
 
 	/**
 	 * Cover the screen with ASCII, then drop characters at random to reveal the page.
@@ -99,7 +97,7 @@
 		const desc = m.fontBoundingBoxDescent ?? ch * 0.2;
 		const baseline = logo ? logo.baseline : (ch - (asc + desc)) / 2 + asc;
 		const cols = Math.max(...TRADERS_ART.map((l) => l.length));
-		const pad = 8;
+		const pad = 2;
 		const box = logo && {
 			x: ox - pad,
 			y: oy - pad,
@@ -124,8 +122,11 @@
 					row,
 					target: part ? target : '',
 					appear: Math.random() * FILL,
-					vanish: part ? Infinity : FILL + 120 + Math.random() ** 0.8 * 1500,
-					resolveAt: Infinity,
+					vanish: part
+						? Infinity
+						: nearLogo(ox + col * cw, oy + row * ch)
+							? FILL + Math.random() * 450
+							: FILL + 120 + Math.random() ** 0.8 * 1500,
 					state: 0,
 					glyph: '',
 					color: ''
@@ -137,28 +138,16 @@
 		const shades = ['#00DC82', '#00DC82', '#00a865', '#0b6b45', '#8cffd0'];
 		const rand = <T,>(xs: ArrayLike<T>) => xs[(Math.random() * xs.length) | 0];
 		let isCovered = false;
-		let resolving = false;
 		let handedOff = false;
-		const paint = (k: Cell, now: number) => {
-			if (!(k.target && isCovered)) {
-				ctx.fillStyle = '#030303';
-				ctx.fillRect(k.x, k.y, cw, ch);
-			}
-			ctx.font = font;
-			if (k.state === 3) {
-				ctx.shadowColor = 'rgba(0, 220, 130, 0.4)';
-				ctx.shadowBlur = 6;
-				ctx.fillStyle = `hsl(155 100% ${shade(k.col / 5 + k.row * 0.4 - now / 450).toFixed(1)}%)`;
-				ctx.fillText(k.target, k.x + cw / 2, k.y + baseline);
-				ctx.shadowBlur = 0;
-			} else {
-				ctx.fillStyle = k.color;
-				ctx.fillText(k.glyph, k.x + cw / 2, k.y + baseline);
-			}
+		let held = false;
+		const paint = (k: Cell) => {
+			ctx.fillStyle = '#030303';
+			ctx.fillRect(k.x, k.y, cw, ch);
+			ctx.fillStyle = k.color;
+			ctx.fillText(k.glyph, k.x + cw / 2, k.y + baseline);
 		};
 
 		const t0 = performance.now();
-		let resolveStart = 0;
 		const step = (now: number) => {
 			const t = now - t0;
 			let left = 0;
@@ -167,19 +156,15 @@
 					k.glyph = rand(GLYPHS);
 					k.color = k.target === '█' ? rand(['#00DC82', '#8cffd0']) : rand(shades);
 					k.state = 1;
-					paint(k, now);
+					paint(k);
 				}
 				if (k.state === 1) {
 					if (t >= k.vanish) {
 						ctx.clearRect(k.x, k.y, cw, ch);
 						k.state = 2;
-					} else if (t >= k.resolveAt) {
-						k.state = 3;
-					} else if (k.target && isCovered) {
-						if (Math.random() < 0.12) k.glyph = rand(GLYPHS);
-					} else if (Math.random() < 0.03) {
+					} else if (!isCovered && Math.random() < 0.03) {
 						k.glyph = rand(GLYPHS);
-						paint(k, now);
+						paint(k);
 					}
 				}
 				if (!k.target && k.state !== 2) left++;
@@ -191,38 +176,21 @@
 			if (!isCovered && (skipDust || t >= FILL)) {
 				isCovered = true;
 				covered();
-				// around the logo only its own characters remain, without backing
-				for (const k of cells)
-					if (!k.target && nearLogo(k.x, k.y)) {
+				// the real logo element takes over its cells, showing the same glyphs
+				if (logo && handoff.begin && !skipDust) {
+					const map = new Map<string, [string, string]>();
+					for (const k of logoCells) {
+						map.set(`${k.row},${k.col}`, [k.glyph, k.color]);
 						ctx.clearRect(k.x, k.y, cw, ch);
 						k.state = 2;
 					}
-			}
-			if (box && isCovered && !handedOff && !skipDust) {
-				ctx.clearRect(box.x, box.y, box.w, box.h);
-				for (const k of logoCells) if (k.state === 1 || k.state === 3) paint(k, now);
-			}
-			if (!handedOff && !skipDust && logo && !resolving && left <= others * 0.1) {
-				resolving = true;
-				resolveStart = t;
-				for (const k of logoCells) k.resolveAt = t + Math.max(0, k.col) * 12 + Math.random() * 250;
-			}
-			let pending = 0;
-			if (resolving && !handedOff) {
-				for (const k of logoCells) if (k.state !== 3) pending++;
-				if (!pending && t - resolveStart > 0) {
-					handedOff = true;
-					handoff.active = true;
-					reveal();
-					if (box) ctx.clearRect(box.x, box.y, box.w, box.h);
+					handoff.begin(map);
+					held = true;
 				}
 			}
-			if (!logo && !handedOff && left <= others * 0.1) {
+			if (!handedOff && (skipDust || left <= others * 0.1)) {
 				handedOff = true;
-				reveal();
-			}
-			if (skipDust && !handedOff) {
-				handedOff = true;
+				if (held) handoff.resolve?.(skipDust);
 				reveal();
 			}
 			if (left || !handedOff) requestAnimationFrame(step);
