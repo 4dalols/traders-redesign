@@ -14,7 +14,7 @@
 	import { afterNavigate, goto } from '$app/navigation';
 	import Lenis from 'lenis';
 	import { tick } from 'svelte';
-	import { decode, lite, reducedMotion } from '$lib/fx/actions';
+	import { lite, reducedMotion, typewriter } from '$lib/fx/actions';
 	import { whenBooted } from '$lib/fx/ascii';
 
 	let { children } = $props();
@@ -52,9 +52,9 @@
 		decoders.forEach((d) => d.destroy());
 		await tick();
 		await whenBooted();
-		decoders = [...document.querySelectorAll<HTMLElement>('main h1:not([data-no-decode]), main h2, main h3')]
-			.map((el) => decode(el))
-			.filter((d) => d !== undefined);
+		decoders = [...document.querySelectorAll<HTMLElement>('main h1:not([data-no-decode])')].map((el) =>
+			typewriter(el)
+		);
 	});
 
 	const traded = $derived(game.position !== 0 || game.cash !== 0);
