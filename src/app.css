@@ -209,3 +209,24 @@ h1:not([data-no-decode]), h2 {
 @keyframes ripple {
 	to { transform: scale(1); opacity: 0; }
 }
+
+/* Phones: drop the effects that are expensive to composite on mobile GPUs */
+@media (pointer: coarse), (max-width: 767px) {
+	.crt-overlay {
+		animation: none;
+		will-change: auto;
+		background: radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.45) 100%);
+	}
+	.backdrop-blur-2xl,
+	.backdrop-blur-sm {
+		backdrop-filter: none;
+		-webkit-backdrop-filter: none;
+	}
+	nav.fixed {
+		background-color: rgb(5 5 5 / 0.96);
+	}
+	.blur-3xl,
+	[class*='blur-['] {
+		display: none;
+	}
+}

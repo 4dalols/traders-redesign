@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { reducedMotion } from '$lib/fx/actions';
+	import { lite, reducedMotion } from '$lib/fx/actions';
 	import logoUrl from '$lib/assets/logo.png';
 
 	const W = 70;
@@ -62,6 +62,7 @@
 	}
 
 	onMount(() => {
+		const cheap = lite();
 		const ro = new ResizeObserver(() => {
 			fontSize = Math.min(16, wrap.clientWidth / (W * 0.6), 560 / H);
 		});
@@ -112,7 +113,7 @@
 			const [lx, ly, lz] = rot(...light);
 			const [ox, oy, oz] = rot(0, 0, -CAM);
 			const ctx = pre.getContext('2d')!;
-			const dpr = window.devicePixelRatio || 1;
+			const dpr = Math.min(cheap ? 1.5 : 3, window.devicePixelRatio || 1);
 			const cw = fontSize * 0.6;
 			const bw = Math.round(W * cw * dpr), bh = Math.round(H * fontSize * dpr);
 			if (pre.width !== bw || pre.height !== bh) {
@@ -193,8 +194,9 @@
 		const frame = (t: number) => {
 			raf = requestAnimationFrame(frame);
 			if (!lastT) lastT = t;
-			const dt = Math.min(50, t - lastT);
-			if (!visible || dt < 40) return;
+			const elapsed = t - lastT;
+			if (!visible || elapsed < (cheap ? 66 : 40)) return;
+			const dt = Math.min(50, elapsed);
 			lastT = t;
 			if (!dragging) {
 				yaw += vYaw + 0.0011 * dt;
@@ -257,6 +259,6 @@
 
 <style>
 	.ascii-t {
-		touch-action: none;
+		touch-action: pan-y;
 	}
 </style>
