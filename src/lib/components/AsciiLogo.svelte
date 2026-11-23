@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { TRADERS_ART as ART, esc, randomGlyph, whenBooted } from '$lib/fx/ascii';
-	import { reducedMotion } from '$lib/fx/actions';
+	import { lite, reducedMotion } from '$lib/fx/actions';
 
 	let wrap: HTMLDivElement;
 	let pre: HTMLPreElement;
@@ -17,6 +17,7 @@
 
 	onMount(() => {
 		const still = reducedMotion();
+		const cheap = lite();
 		const mouse = { col: -99, row: -99 };
 		let start = 0;
 		let resolveAt: number[][] = [];
@@ -112,8 +113,10 @@
 			if (!visible || t - last < 33) return;
 			last = t;
 			if (!settled) {
-				if (t - start >= assembleEnd) settle(t);
-				else return renderAssembly(t);
+				if (t - start >= assembleEnd) {
+					settle(t);
+					if (cheap) return cancelAnimationFrame(raf);
+				} else return renderAssembly(t);
 			}
 			setShift(t);
 			if (glitching) glitching = renderGlitch();
@@ -138,7 +141,7 @@
 			assembleEnd = Math.max(...resolveAt.flat()) + 50;
 			if (still) return settle(start);
 			io.observe(pre);
-			window.addEventListener('pointermove', onMove, { passive: true });
+			if (!cheap) window.addEventListener('pointermove', onMove, { passive: true });
 			raf = requestAnimationFrame(frame);
 		});
 

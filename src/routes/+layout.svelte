@@ -14,7 +14,7 @@
 	import { afterNavigate, goto } from '$app/navigation';
 	import Lenis from 'lenis';
 	import { tick } from 'svelte';
-	import { decode } from '$lib/fx/actions';
+	import { decode, lite, reducedMotion } from '$lib/fx/actions';
 	import { whenBooted } from '$lib/fx/ascii';
 
 	let { children } = $props();
@@ -39,7 +39,7 @@
 			goto(base + ($page.route.id === '/trade' ? '/' : '/trade'));
 		};
 		window.addEventListener('keydown', onKey);
-		if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+		if (!reducedMotion() && !lite())
 			lenis = new Lenis({ autoRaf: true, lerp: 0.09, anchors: true });
 		return () => {
 			lenis?.destroy();

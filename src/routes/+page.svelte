@@ -77,7 +77,7 @@
 	<div class="absolute left-[-10%] bottom-[-10%] h-[500px] w-[500px] rounded-full bg-violet-accent/[0.025] blur-[150px]"></div>
 
 	<div class="relative z-10 w-full px-6 md:px-12 lg:px-16 py-16 md:py-24">
-		<div class="mx-auto grid max-w-[85rem] items-center gap-12 lg:grid-cols-12">
+		<div class="mx-auto grid max-w-[85rem] grid-cols-1 items-center gap-12 lg:grid-cols-12">
 			<div class="lg:col-span-7">
 			<!-- Badge -->
 			<div

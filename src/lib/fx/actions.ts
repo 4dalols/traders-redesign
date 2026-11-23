@@ -3,6 +3,10 @@ const finePointer = () =>
 export const reducedMotion = () =>
 	typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+/** Phones and small screens get a cheaper version of the heavy effects. */
+export const lite = () =>
+	typeof window !== 'undefined' && window.matchMedia('(pointer: coarse), (max-width: 767px)').matches;
+
 /** Expanding ripple from the click point. */
 export function ripple(node: HTMLElement) {
 	node.classList.add('ripple-host');
