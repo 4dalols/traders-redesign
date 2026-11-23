@@ -83,3 +83,53 @@ export function inView(node: HTMLElement, threshold = 0.3) {
 	io.observe(node);
 	return { destroy: () => io.disconnect() };
 }
+
+/** Scrambles every text node under `node` into random glyphs, then decodes left-to-right. */
+export function decode(node: HTMLElement, duration = 900) {
+	if (reducedMotion()) return;
+	const glyphs = '!<>-_\\/[]{}=+*^?#$%&01';
+	let raf = 0;
+	const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT);
+	const texts: { n: Text; orig: string }[] = [];
+	for (let n = walker.nextNode(); n; n = walker.nextNode())
+		if (n.textContent?.trim()) texts.push({ n: n as Text, orig: n.textContent });
+	const total = texts.reduce((s, t) => s + t.orig.length, 0);
+
+	const run = () => {
+		const start = performance.now();
+		const step = (now: number) => {
+			const p = Math.min(1, (now - start) / duration);
+			let offset = 0;
+			for (const { n, orig } of texts) {
+				let s = '';
+				for (let i = 0; i < orig.length; i++) {
+					const ch = orig[i];
+					const at = (offset + i) / total;
+					s += ch === ' ' || ch === '\n' || p >= at * 0.7 + 0.3 ? ch : glyphs[(Math.random() * glyphs.length) | 0];
+				}
+				offset += orig.length;
+				n.data = s;
+			}
+			if (p < 1) raf = requestAnimationFrame(step);
+		};
+		raf = requestAnimationFrame(step);
+	};
+
+	const io = new IntersectionObserver(
+		(entries) => {
+			if (entries.some((e) => e.isIntersecting)) {
+				io.disconnect();
+				run();
+			}
+		},
+		{ threshold: 0.6 }
+	);
+	io.observe(node);
+	return {
+		destroy() {
+			io.disconnect();
+			cancelAnimationFrame(raf);
+			for (const { n, orig } of texts) n.data = orig;
+		}
+	};
+}

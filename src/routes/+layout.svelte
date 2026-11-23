@@ -13,6 +13,9 @@
 	import { onMount } from 'svelte';
 	import { afterNavigate } from '$app/navigation';
 	import Lenis from 'lenis';
+	import { tick } from 'svelte';
+	import { decode } from '$lib/fx/actions';
+	import { whenBooted } from '$lib/fx/ascii';
 
 	let { children } = $props();
 
@@ -32,8 +35,15 @@
 		lenis = new Lenis({ autoRaf: true, lerp: 0.09, anchors: true });
 		return () => lenis?.destroy();
 	});
-	afterNavigate(({ type }) => {
+	let decoders: { destroy(): void }[] = [];
+	afterNavigate(async ({ type }) => {
 		if (type !== 'popstate') lenis?.scrollTo(0, { immediate: true, force: true });
+		decoders.forEach((d) => d.destroy());
+		await tick();
+		await whenBooted();
+		decoders = [...document.querySelectorAll<HTMLElement>('main h1:not([data-no-decode]), main h2, main h3')]
+			.map((el) => decode(el))
+			.filter((d) => d !== undefined);
 	});
 
 	const traded = $derived(game.position !== 0 || game.cash !== 0);

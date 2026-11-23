@@ -1,7 +1,8 @@
 <script lang="ts">
 	import groupPhoto from '$lib/assets/group.jpg';
 	import { sponsors } from '$lib/data/sponsors';
-	import ParticleLogo from '$lib/components/ParticleLogo.svelte';
+	import AsciiLogo from '$lib/components/AsciiLogo.svelte';
+	import AsciiDonut from '$lib/components/AsciiDonut.svelte';
 	import Odometer from '$lib/components/Odometer.svelte';
 	import { magnetic, tilt } from '$lib/fx/actions';
 
@@ -75,7 +76,8 @@
 	<div class="absolute left-[-10%] bottom-[-10%] h-[500px] w-[500px] rounded-full bg-violet-accent/[0.025] blur-[150px]"></div>
 
 	<div class="relative z-10 w-full px-6 md:px-12 lg:px-16 py-16 md:py-24">
-		<div class="mx-auto max-w-[85rem]">
+		<div class="mx-auto grid max-w-[85rem] items-center gap-12 lg:grid-cols-12">
+			<div class="lg:col-span-7">
 			<!-- Badge -->
 			<div
 				class="mb-10 inline-flex items-center gap-3 rounded-full border border-green-electric/20 bg-green-electric/[0.05] px-5 py-2.5"
@@ -87,9 +89,9 @@
 			</div>
 
 			<!-- Main title — massive, asymmetric -->
-			<h1 class="relative">
+			<h1 class="relative" data-no-decode>
 				<span class="sr-only">TRADERS</span>
-				<ParticleLogo />
+				<AsciiLogo />
 			<span
 				class="block mt-2 ml-1 md:ml-3 text-[clamp(2.5rem,8vw,6.5rem)] font-[300] leading-[0.9] tracking-[-0.02em]"
 				style="font-family: 'Open Sans Condensed', sans-serif;"
@@ -99,7 +101,7 @@
 			</h1>
 
 			<!-- Tagline — offset to the right for asymmetry -->
-			<div class="mt-14 md:mt-20 md:ml-auto md:max-w-lg lg:max-w-xl md:mr-[5%]">
+			<div class="mt-12 md:mt-14 md:max-w-xl">
 				<p class="text-lg md:text-xl lg:text-2xl text-zinc-300 leading-relaxed font-light">
 					Partnering with leading trading firms to host the
 					<span class="text-zinc-100 font-medium">largest intercollegiate trading competition</span>.
@@ -135,6 +137,10 @@
 						About Us
 					</a>
 				</div>
+			</div>
+			</div>
+			<div class="lg:col-span-5">
+				<AsciiDonut />
 			</div>
 		</div>
 	</div>

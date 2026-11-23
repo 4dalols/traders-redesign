@@ -1,21 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { LOGO_ART as ART, GLYPHS, esc } from '$lib/fx/ascii';
 
-	const ART = [
-		'████████╗██████╗  █████╗ ██████╗ ███████╗██████╗ ███████╗',
-		'╚══██╔══╝██╔══██╗██╔══██╗██╔══██╗██╔════╝██╔══██╗██╔════╝',
-		'   ██║   ██████╔╝███████║██║  ██║█████╗  ██████╔╝███████╗',
-		'   ██║   ██╔══██╗██╔══██║██║  ██║██╔══╝  ██╔══██╗╚════██║',
-		'   ██║   ██║  ██║██║  ██║██████╔╝███████╗██║  ██║███████║',
-		'   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚══════╝╚═╝  ╚═╝╚══════╝',
-		'',
-		'             ██████╗ ███╗   ███╗██╗████████╗',
-		'            ██╔═══██╗████╗ ████║██║╚══██╔══╝',
-		'            ██║██╗██║██╔████╔██║██║   ██║   ',
-		'            ██║██║██║██║╚██╔╝██║██║   ██║   ',
-		'            ╚█║████╔╝██║ ╚═╝ ██║██║   ██║   ',
-		'             ╚╝╚═══╝ ╚═╝     ╚═╝╚═╝   ╚═╝   '
-	];
 	const LINES: [string, string][] = [
 		['TRADERS@MIT BIOS v19.0 (c) MIT', ''],
 		['Memory test ............ 640K', 'OK'],
@@ -24,7 +10,6 @@
 		['Spawning market makers', 'OK'],
 		['Calibrating risk limits', 'OK']
 	];
-	const GLYPHS = '!@#$%&*+=<>?/\\|{}[]~^0123456789ABCDEF$¥€£';
 
 	let show = $state(true);
 	let leaving = $state(false);
@@ -77,7 +62,7 @@
 							out += `<span style="color:hsl(${hue} 95% 62%)">${ch}</span>`;
 						} else if (Math.random() < 0.6) {
 							const g = GLYPHS[(Math.random() * GLYPHS.length) | 0];
-							out += `<span style="color:hsl(${hue} 60% 35%)">${g === '<' ? '&lt;' : g === '>' ? '&gt;' : g === '&' ? '&amp;' : g}</span>`;
+							out += `<span style="color:hsl(${hue} 60% 35%)">${esc(g)}</span>`;
 						} else out += ' ';
 					});
 					out += '\n';
@@ -154,6 +139,7 @@
 		animation: blink 0.8s steps(1) infinite;
 	}
 	.boot-art {
+		font-family: ui-monospace, Menlo, Consolas, 'DejaVu Sans Mono', 'Courier New', monospace;
 		margin-top: 1.5rem;
 		font-size: clamp(5px, 1.45vw, 15px);
 		line-height: 1.1;
