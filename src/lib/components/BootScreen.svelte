@@ -109,11 +109,11 @@
 			dusting = true;
 			await tick();
 			dissolve(
+				() => (show = false),
 				() => {
-					show = false;
+					dusting = false;
 					html.classList.add('booted');
-				},
-				() => (dusting = false)
+				}
 			);
 		};
 
