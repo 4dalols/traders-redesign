@@ -15,6 +15,8 @@
 	import Lenis from 'lenis';
 	import { lite, reducedMotion } from '$lib/fx/actions';
 	import { whenBooted } from '$lib/fx/ascii';
+	import { applyTitleFx, storedFx } from '$lib/fx/titles';
+	import TitleFxPicker from '$lib/components/TitleFxPicker.svelte';
 
 	let { children } = $props();
 
@@ -48,10 +50,7 @@
 	afterNavigate(async ({ type }) => {
 		if (type !== 'popstate') lenis?.scrollTo(0, { immediate: true, force: true });
 		await whenBooted();
-		for (const h of document.querySelectorAll<HTMLElement>('main h1:not([data-no-decode])')) {
-			h.dataset.sweep = h.innerText;
-			h.classList.add('title-sweep');
-		}
+		applyTitleFx(storedFx());
 	});
 
 	const traded = $derived(game.position !== 0 || game.cash !== 0);
@@ -81,6 +80,9 @@
 </svg>
 
 <BootScreen />
+{#if $page.route.id !== '/'}
+	<TitleFxPicker />
+{/if}
 <div class="crt-overlay" aria-hidden="true"></div>
 
 <!-- Navigation -->
