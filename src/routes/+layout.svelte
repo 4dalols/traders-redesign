@@ -13,9 +13,7 @@
 	import { onMount } from 'svelte';
 	import { afterNavigate, goto } from '$app/navigation';
 	import Lenis from 'lenis';
-	import { tick } from 'svelte';
-	import { lite, reducedMotion, typewriter } from '$lib/fx/actions';
-	import { whenBooted } from '$lib/fx/ascii';
+	import { lite, reducedMotion } from '$lib/fx/actions';
 
 	let { children } = $props();
 
@@ -46,15 +44,8 @@
 			window.removeEventListener('keydown', onKey);
 		};
 	});
-	let decoders: { destroy(): void }[] = [];
-	afterNavigate(async ({ type }) => {
+	afterNavigate(({ type }) => {
 		if (type !== 'popstate') lenis?.scrollTo(0, { immediate: true, force: true });
-		decoders.forEach((d) => d.destroy());
-		await tick();
-		await whenBooted();
-		decoders = [...document.querySelectorAll<HTMLElement>('main h1:not([data-no-decode])')].map((el) =>
-			typewriter(el)
-		);
 	});
 
 	const traded = $derived(game.position !== 0 || game.cash !== 0);

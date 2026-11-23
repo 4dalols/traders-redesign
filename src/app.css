@@ -230,21 +230,3 @@ h1:not([data-no-decode]), h2 {
 		display: none;
 	}
 }
-
-/* Typewriter titles */
-.tw-rest {
-	visibility: hidden;
-}
-.tw-cursor {
-	display: inline-block;
-	width: 0.45em;
-	height: 0.8em;
-	margin-left: 0.06em;
-	vertical-align: -0.02em;
-	background: #00dc82;
-	box-shadow: 0 0 12px rgba(0, 220, 130, 0.5);
-	animation: tw-blink 1s steps(1) infinite;
-}
-@keyframes tw-blink {
-	50% { opacity: 0; }
-}
