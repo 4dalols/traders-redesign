@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { TRADERS_ART as ART, esc, randomGlyph, whenBooted } from '$lib/fx/ascii';
+	import { TRADERS_ART as ART, esc, handoff, randomGlyph, whenBooted } from '$lib/fx/ascii';
 	import { lite, reducedMotion } from '$lib/fx/actions';
 
 	let wrap: HTMLDivElement;
@@ -27,6 +27,7 @@
 		let last = 0;
 		let k = 0; // |wave vector| in rad per px
 		let glitching = false;
+		let fromBoot = false;
 
 		/**
 		 * After assembly the logo is plain text painted with a diagonal repeating gradient
@@ -73,7 +74,9 @@
 					if (ch === ' ') return void (out += ' ');
 					const near = Math.hypot((c - mouse.col) * 0.5, r - mouse.row) < 2.2;
 					if (t - start < resolveAt[r][c]) {
-						out += Math.random() < 0.55 ? `<span style="color:#00DC8255">${esc(randomGlyph())}</span>` : ' ';
+						if (fromBoot)
+							out += ch === '█' ? `<span style="color:${Math.random() < 0.5 ? '#00DC82' : '#8cffd0'}">${esc(randomGlyph())}</span>` : ' ';
+						else out += Math.random() < 0.55 ? `<span style="color:#00DC8255">${esc(randomGlyph())}</span>` : ' ';
 					} else if (near && Math.random() < 0.5) {
 						out += `<span style="color:#8B5CF6">${esc(randomGlyph())}</span>`;
 					} else {
@@ -136,6 +139,8 @@
 		const io = new IntersectionObserver(([e]) => (visible = e.isIntersecting));
 
 		whenBooted().then(() => {
+			fromBoot = handoff.active;
+			handoff.active = false;
 			start = performance.now();
 			resolveAt = ART.map((row) => [...row].map((_, c) => (still ? 0 : c * 18 + Math.random() * 600)));
 			assembleEnd = Math.max(...resolveAt.flat()) + 50;
