@@ -16,13 +16,15 @@
 	let pre = $state<HTMLPreElement>();
 	let dust = $state<HTMLCanvasElement>();
 	let dusting = $state(false);
+	let skipDust = false;
 
 	/** Cover the screen with ASCII, then drop characters at random to reveal the page. */
-	function dissolve(covered: () => void, done: () => void) {
+	function dissolve(covered: () => void, reveal: () => void, done: () => void) {
 		const c = dust;
 		const ctx = c?.getContext('2d');
 		if (!c || !ctx) {
 			covered();
+			reveal();
 			return done();
 		}
 		const W = innerWidth;
@@ -57,6 +59,7 @@
 			ctx.fillText(GLYPHS[(Math.random() * GLYPHS.length) | 0], x + cw / 2, y + ch / 2);
 		};
 		let isCovered = false;
+		let revealed = false;
 		const t0 = performance.now();
 		const step = (now: number) => {
 			const t = now - t0;
@@ -74,9 +77,17 @@
 				}
 				if (state[i] !== 2) left++;
 			}
-			if (!isCovered && t >= FILL) {
+			if (skipDust) {
+				ctx.clearRect(0, 0, W, H);
+				left = 0;
+			}
+			if (!isCovered && (left === 0 || t >= FILL)) {
 				isCovered = true;
 				covered();
+			}
+			if (!revealed && left <= n * 0.1) {
+				revealed = true;
+				reveal();
 			}
 			if (left) requestAnimationFrame(step);
 			else done();
@@ -110,9 +121,10 @@
 			await tick();
 			dissolve(
 				() => (show = false),
+				() => html.classList.add('booted'),
 				() => {
 					dusting = false;
-					html.classList.add('booted');
+					unlisten();
 				}
 			);
 		};
@@ -145,13 +157,26 @@
 		};
 		raf = requestAnimationFrame(frame);
 
-		const skip = () => finish();
-		window.addEventListener('keydown', skip, { once: true });
-		window.addEventListener('pointerdown', skip, { once: true });
-		return () => {
-			cancelAnimationFrame(raf);
+		const skip = () => {
+			if (dusting) {
+				skipDust = true;
+				return;
+			}
+			if (done) return;
+			done = true;
+			show = false;
+			html.classList.add('booted');
+			unlisten();
+		};
+		const unlisten = () => {
 			window.removeEventListener('keydown', skip);
 			window.removeEventListener('pointerdown', skip);
+		};
+		window.addEventListener('keydown', skip);
+		window.addEventListener('pointerdown', skip);
+		return () => {
+			cancelAnimationFrame(raf);
+			unlisten();
 		};
 	});
 </script>
