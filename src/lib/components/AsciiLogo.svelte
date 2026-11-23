@@ -188,6 +188,9 @@
 		pointer-events: none;
 	}
 	.shimmer {
+		/* own layer: the moving gradient repaints only the logo */
+		will-change: transform;
+		contain: paint;
 		color: transparent;
 		-webkit-background-clip: text;
 		background-clip: text;
