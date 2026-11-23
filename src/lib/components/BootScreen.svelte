@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount, tick } from 'svelte';
-	import { LOGO_ART as ART, GLYPHS, esc } from '$lib/fx/ascii';
+	import { LOGO_ART as ART, TRADERS_ART, GLYPHS, esc, handoff } from '$lib/fx/ascii';
 
 	const LINES: [string, string][] = [
 		['TRADERS@MIT BIOS v19.0 (c) MIT', ''],
@@ -18,7 +18,42 @@
 	let dusting = $state(false);
 	let skipDust = false;
 
-	/** Cover the screen with ASCII, then drop characters at random to reveal the page. */
+	type Cell = {
+		x: number;
+		y: number;
+		w: number;
+		h: number;
+		font: string;
+		appear: number;
+		vanish: number;
+		solid: boolean;
+		state: number; // 0 hidden, 1 shown, 2 cleared
+		glyph: string;
+		color: string;
+	};
+
+	/** Character grid of the home hero logo, if it is on screen. */
+	function logoBox() {
+		const el = document.querySelector<HTMLPreElement>('pre.ascii-logo.assembling');
+		if (!el) return null;
+		const r = el.getBoundingClientRect();
+		if (!r.width || r.bottom < 0 || r.top > innerHeight) return null;
+		const probe = document.createElement('span');
+		probe.textContent = '█'.repeat(20);
+		el.appendChild(probe);
+		const cw = probe.getBoundingClientRect().width / 20;
+		probe.remove();
+		const cs = getComputedStyle(el);
+		const fs = parseFloat(cs.fontSize);
+		const lh = fs * 1.05;
+		const cols = Math.max(...TRADERS_ART.map((l) => l.length));
+		return { x: r.left, y: r.top, cw, lh, w: cw * cols, h: lh * TRADERS_ART.length, cols, font: `${fs}px ${cs.fontFamily}` };
+	}
+
+	/**
+	 * Cover the screen with ASCII, then drop characters at random to reveal the page.
+	 * Characters where the hero logo will be stay behind and hand off to its assembly.
+	 */
 	function dissolve(covered: () => void, reveal: () => void, done: () => void) {
 		const c = dust;
 		const ctx = c?.getContext('2d');
@@ -33,60 +68,93 @@
 		c.width = W * dpr;
 		c.height = H * dpr;
 		ctx.scale(dpr, dpr);
-		ctx.font = '13px ui-monospace, Menlo, Consolas, monospace';
 		ctx.textAlign = 'center';
 		ctx.textBaseline = 'middle';
+		const FONT = '13px ui-monospace, Menlo, Consolas, monospace';
+		ctx.font = FONT;
 		const cw = Math.ceil(ctx.measureText('M').width) + 1;
 		const ch = 16;
-		const cols = Math.ceil(W / cw);
-		const rows = Math.ceil(H / ch);
-		const n = cols * rows;
 		const FILL = 280;
-		const appear = new Float32Array(n);
-		const vanish = new Float32Array(n);
-		const state = new Uint8Array(n); // 0 hidden, 1 shown, 2 cleared
-		for (let i = 0; i < n; i++) {
-			appear[i] = Math.random() * FILL;
-			vanish[i] = FILL + 120 + Math.random() ** 0.8 * 1500;
-		}
+		const appearAt = () => Math.random() * FILL;
+		const vanishAt = () => FILL + 120 + Math.random() ** 0.8 * 1500;
+		const logo = logoBox();
+		const inLogo = (x: number, y: number) =>
+			!!logo && x >= logo.x && x < logo.x + logo.w && y >= logo.y && y < logo.y + logo.h;
+
+		const cells: Cell[] = [];
+		const add = (x: number, y: number, w: number, h: number, font: string, solid: boolean) =>
+			cells.push({ x, y, w, h, font, solid, appear: appearAt(), vanish: solid ? Infinity : vanishAt(), state: 0, glyph: '', color: '' });
+		for (let y = 0; y < H; y += ch)
+			for (let x = 0; x < W; x += cw) if (!inLogo(x + cw / 2, y + ch / 2)) add(x, y, cw, ch, FONT, false);
+		if (logo)
+			TRADERS_ART.forEach((line, r) => {
+				for (let col = 0; col < logo.cols; col++)
+					add(logo.x + col * logo.cw, logo.y + r * logo.lh, logo.cw, logo.lh, logo.font, line[col] === '█');
+			});
+		const others = cells.filter((k) => !k.solid).length;
+
 		const shades = ['#00DC82', '#00DC82', '#00a865', '#0b6b45', '#8cffd0'];
-		const draw = (i: number) => {
-			const x = (i % cols) * cw;
-			const y = ((i / cols) | 0) * ch;
-			ctx.fillStyle = '#030303';
-			ctx.fillRect(x, y, cw, ch);
-			ctx.fillStyle = shades[(Math.random() * shades.length) | 0];
-			ctx.fillText(GLYPHS[(Math.random() * GLYPHS.length) | 0], x + cw / 2, y + ch / 2);
-		};
+		const bright = ['#00DC82', '#8cffd0'];
+		const rand = <T,>(xs: ArrayLike<T>) => xs[(Math.random() * xs.length) | 0];
 		let isCovered = false;
 		let revealed = false;
+		let fade = 1;
+		const paint = (k: Cell) => {
+			if (k.solid && isCovered) {
+				ctx.clearRect(k.x, k.y, k.w, k.h);
+				ctx.globalAlpha = fade;
+			} else {
+				ctx.fillStyle = '#030303';
+				ctx.fillRect(k.x, k.y, k.w, k.h);
+			}
+			ctx.fillStyle = k.color;
+			ctx.font = k.font;
+			ctx.fillText(k.glyph, k.x + k.w / 2, k.y + k.h / 2);
+			ctx.globalAlpha = 1;
+		};
+
 		const t0 = performance.now();
 		const step = (now: number) => {
 			const t = now - t0;
 			let left = 0;
-			for (let i = 0; i < n; i++) {
-				if (state[i] === 0 && t >= appear[i]) {
-					draw(i);
-					state[i] = 1;
+			for (const k of cells) {
+				if (k.state === 0 && t >= k.appear) {
+					k.glyph = rand(GLYPHS);
+					k.color = k.solid ? rand(bright) : rand(shades);
+					paint(k);
+					k.state = 1;
 				}
-				if (state[i] === 1) {
-					if (t >= vanish[i]) {
-						ctx.clearRect((i % cols) * cw, ((i / cols) | 0) * ch, cw, ch);
-						state[i] = 2;
-					} else if (Math.random() < 0.03) draw(i);
+				if (k.state === 1) {
+					if (t >= k.vanish) {
+						ctx.clearRect(k.x, k.y, k.w, k.h);
+						k.state = 2;
+					} else if (k.solid && isCovered) {
+						if (Math.random() < 0.15) k.glyph = rand(GLYPHS);
+						paint(k);
+					} else if (Math.random() < 0.03) {
+						k.glyph = rand(GLYPHS);
+						paint(k);
+					}
 				}
-				if (state[i] !== 2) left++;
+				if (!k.solid && k.state !== 2) left++;
 			}
+			fade = 1 - 0.25 * (1 - left / others);
 			if (skipDust) {
 				ctx.clearRect(0, 0, W, H);
 				left = 0;
 			}
-			if (!isCovered && (left === 0 || t >= FILL)) {
+			if (!isCovered && (skipDust || t >= FILL)) {
 				isCovered = true;
 				covered();
 			}
-			if (!revealed && left <= n * 0.1) {
+			if (!revealed && left <= others * 0.1) {
 				revealed = true;
+				for (const k of cells)
+					if (k.solid) {
+						ctx.clearRect(k.x, k.y, k.w, k.h);
+						k.state = 2;
+					}
+				handoff.active = !!logo && !skipDust;
 				reveal();
 			}
 			if (left) requestAnimationFrame(step);
@@ -106,6 +174,13 @@
 			return;
 		}
 		sessionStorage.setItem('booted', '1');
+		html.classList.add('boot-lock');
+		const block = (e: Event) => {
+			e.preventDefault();
+			e.stopPropagation();
+		};
+		window.addEventListener('wheel', block, { capture: true, passive: false });
+		window.addEventListener('touchmove', block, { capture: true, passive: false });
 
 		const resolveAt = ART.map((row) =>
 			[...row].map((_, c) => 900 + c * 16 + Math.random() * 500)
@@ -171,6 +246,9 @@
 		const unlisten = () => {
 			window.removeEventListener('keydown', skip);
 			window.removeEventListener('pointerdown', skip);
+			window.removeEventListener('wheel', block, { capture: true });
+			window.removeEventListener('touchmove', block, { capture: true });
+			html.classList.remove('boot-lock');
 		};
 		window.addEventListener('keydown', skip);
 		window.addEventListener('pointerdown', skip);
@@ -215,6 +293,9 @@
 	}
 	:global(html.booted) .boot {
 		display: none;
+	}
+	:global(html.boot-lock) {
+		overflow: hidden;
 	}
 	.boot-dust {
 		position: fixed;
