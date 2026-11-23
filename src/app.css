@@ -159,8 +159,11 @@ h1:not([data-no-decode]), h2 {
 /* 3D tilt + holographic foil */
 .tilt-card {
 	position: relative;
-	transform-style: preserve-3d;
 	transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s;
+}
+/* only promote the card to its own layer while hovered; dozens of idle layers make scrolling janky */
+.tilt-card.tilt-armed {
+	transform-style: preserve-3d;
 	will-change: transform;
 }
 .tilt-card.tilt-active {

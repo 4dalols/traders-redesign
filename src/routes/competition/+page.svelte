@@ -257,6 +257,8 @@
 				{#each competitionImages as image, i}
 					<img
 						src={getCompImage(image)}
+						loading="lazy"
+						decoding="async"
 						alt="Competition photo {i + 1}"
 						class="absolute inset-0 h-full w-full object-cover transition-opacity duration-700
 							{i === currentSlide ? 'opacity-100' : 'opacity-0'}"

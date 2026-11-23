@@ -153,6 +153,8 @@
 					<div use:tilt class="relative mb-3 overflow-hidden aspect-square border border-zinc-800/50 bg-zinc-900 transition-all duration-500 group-hover:border-green-electric/30">
 						<img
 							src={getProfileImage(member.image)}
+							loading="lazy"
+							decoding="async"
 							alt={member.name}
 							class="h-full w-full object-cover transition-all duration-500 group-hover:scale-105"
 						/>
