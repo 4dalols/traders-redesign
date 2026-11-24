@@ -18,7 +18,7 @@ export const LOGO_ART = [
 	'             ╚╝╚═══╝ ╚═╝     ╚═╝╚═╝   ╚═╝   '
 ];
 
-export const GLYPHS = '!@#$%&*+=<>?/\\|{}[]~^0123456789ABCDEF$¥€£';
+export const GLYPHS = '01234567890123456789$$%%++--.,±';
 
 export const esc = (c: string) =>
 	c === '<' ? '&lt;' : c === '>' ? '&gt;' : c === '&' ? '&amp;' : c;
