@@ -94,7 +94,7 @@
 								Math.random() < 0.55 ? `<span style="color:#034c2e">${esc(randomGlyph())}</span>` : ' ';
 					} else if (near && Math.random() < 0.5) {
 						glow += ' ';
-						out += `<span style="color:#d4ffe9">${esc(randomGlyph())}</span>`;
+						out += `<span style="color:#ff3b3b">${esc(randomGlyph())}</span>`;
 					} else {
 						out += ch;
 						glow += ch;
@@ -252,8 +252,8 @@
 		pointer-events: none;
 	}
 	.glitch :global(span) {
-		color: #d4ffe9;
+		color: #ff3b3b;
 		background: #050505;
-		text-shadow: 0 0 6px rgba(0, 220, 130, 0.4);
+		text-shadow: 0 0 6px rgba(255, 59, 59, 0.45);
 	}
 </style>
