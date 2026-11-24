@@ -34,7 +34,7 @@
 			<h1 class="font-display text-5xl md:text-7xl lg:text-8xl font-[800] tracking-[-0.03em] text-zinc-50">
 				Join Us
 			</h1>
-			<div class="mt-5 h-[3px] w-20 bg-gradient-to-r from-green-electric to-amber-accent"></div>
+			<div class="mt-5 h-[3px] w-20 bg-gradient-to-r from-green-electric to-green-electric"></div>
 			<p class="mt-8 max-w-2xl text-lg md:text-xl leading-relaxed text-zinc-300 font-light">
 				Traders@MIT is a small group of ~25 undergraduate students with a flat structure.
 				Every board member contributes meaningfully to the club. No trading experience required.
@@ -88,15 +88,15 @@
 			</div>
 
 			<!-- Develop Exchange -->
-			<div class="md:col-span-5 group relative overflow-hidden border border-zinc-800/50 bg-zinc-900/20 p-8 md:p-10 transition-all duration-500 hover:border-violet-accent/20">
-				<div class="absolute top-0 left-0 h-full w-[3px] bg-gradient-to-b from-violet-accent to-violet-accent/0"></div>
+			<div class="md:col-span-5 group relative overflow-hidden border border-zinc-800/50 bg-zinc-900/20 p-8 md:p-10 transition-all duration-500 hover:border-zinc-300/20">
+				<div class="absolute top-0 left-0 h-full w-[3px] bg-gradient-to-b from-zinc-300 to-zinc-300/0"></div>
 				<div class="flex items-center gap-4 mb-5">
-					<div class="flex h-10 w-10 items-center justify-center border border-zinc-700/50 text-violet-accent transition-colors duration-300 group-hover:border-violet-accent/30">
+					<div class="flex h-10 w-10 items-center justify-center border border-zinc-700/50 text-zinc-300 transition-colors duration-300 group-hover:border-zinc-300/30">
 						<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
 						</svg>
 					</div>
-					<span class="font-mono text-xs tracking-[0.25em] uppercase text-violet-accent/40">02</span>
+					<span class="font-mono text-xs tracking-[0.25em] uppercase text-zinc-300/40">02</span>
 				</div>
 				<h3 class="font-display text-xl md:text-2xl font-[700] text-zinc-50">Develop the Exchange</h3>
 				<p class="mt-4 text-sm leading-relaxed text-zinc-300 font-light">
@@ -106,15 +106,15 @@
 			</div>
 
 			<!-- Logistics -->
-			<div class="md:col-span-5 group relative overflow-hidden border border-zinc-800/50 bg-zinc-900/20 p-8 md:p-10 transition-all duration-500 hover:border-amber-accent/20">
-				<div class="absolute top-0 left-0 h-full w-[3px] bg-gradient-to-b from-amber-accent to-amber-accent/0"></div>
+			<div class="md:col-span-5 group relative overflow-hidden border border-zinc-800/50 bg-zinc-900/20 p-8 md:p-10 transition-all duration-500 hover:border-green-electric/20">
+				<div class="absolute top-0 left-0 h-full w-[3px] bg-gradient-to-b from-green-electric to-green-electric/0"></div>
 				<div class="flex items-center gap-4 mb-5">
-					<div class="flex h-10 w-10 items-center justify-center border border-zinc-700/50 text-amber-accent transition-colors duration-300 group-hover:border-amber-accent/30">
+					<div class="flex h-10 w-10 items-center justify-center border border-zinc-700/50 text-green-electric transition-colors duration-300 group-hover:border-green-electric/30">
 						<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
 						</svg>
 					</div>
-					<span class="font-mono text-xs tracking-[0.25em] uppercase text-amber-accent/40">03</span>
+					<span class="font-mono text-xs tracking-[0.25em] uppercase text-green-electric/40">03</span>
 				</div>
 				<h3 class="font-display text-xl md:text-2xl font-[700] text-zinc-50">Coordinate Logistics</h3>
 				<p class="mt-4 text-sm leading-relaxed text-zinc-300 font-light">
@@ -146,11 +146,11 @@
 	<!-- Traders Week — creative timeline -->
 	<div class="mb-20 md:mb-28 fade-in-section" use:fadeIn>
 		<div class="relative mb-12">
-			<span class="font-mono text-xs tracking-[0.25em] uppercase text-violet-accent/50 block mb-3">Fall Recruitment</span>
+			<span class="font-mono text-xs tracking-[0.25em] uppercase text-zinc-300/50 block mb-3">Fall Recruitment</span>
 			<h2 class="font-display text-3xl md:text-5xl font-[800] tracking-[-0.02em] text-zinc-50">
 				Traders Week
 			</h2>
-			<div class="mt-4 h-[2px] w-12 bg-violet-accent/40"></div>
+			<div class="mt-4 h-[2px] w-12 bg-zinc-300/40"></div>
 			<p class="mt-6 text-sm text-zinc-300 font-light max-w-xl">
 				Each fall, we host Traders Week, a series of events to introduce students to the club
 				and quantitative finance.
@@ -160,13 +160,13 @@
 		<!-- Timeline -->
 		<div class="relative">
 			<!-- Vertical line -->
-			<div class="absolute left-[23px] top-0 bottom-0 w-[1px] bg-gradient-to-b from-green-electric/30 via-violet-accent/20 to-transparent hidden md:block"></div>
+			<div class="absolute left-[23px] top-0 bottom-0 w-[1px] bg-gradient-to-b from-green-electric/30 via-zinc-300/20 to-transparent hidden md:block"></div>
 
 			<div class="space-y-4">
 				{#each [
 					{ num: '01', title: 'Intro to Traders & Q&A', desc: 'Learn about the club and ask questions', color: 'green-electric' },
 					{ num: '02', title: 'Grid Game', desc: 'Play a decision-making game and socialize', color: 'green-electric' },
-					{ num: '03', title: 'Estimathon', desc: 'Test your estimation skills in a fun competition', color: 'violet-accent' }
+					{ num: '03', title: 'Estimathon', desc: 'Test your estimation skills in a fun competition', color: 'zinc-300' }
 				] as event}
 					<div class="group flex items-start gap-6 relative border border-zinc-800/50 bg-zinc-900/20 p-6 md:p-8 transition-all duration-500 hover:border-{event.color}/20 hover:bg-zinc-900/40">
 						<!-- Number badge -->

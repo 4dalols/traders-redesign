@@ -1,4 +1,4 @@
-/** Page titles: wrap the text so a white → green → violet gradient can flow through it. */
+/** Page titles: wrap the text so a white → green gradient can flow through it. */
 export function applyTitleFx() {
 	if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 	for (const h of document.querySelectorAll<HTMLElement>('main h1:not([data-no-decode])')) {

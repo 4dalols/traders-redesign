@@ -167,7 +167,7 @@
 
 		<!-- What to Expect -->
 		<div class="md:col-span-5 relative overflow-hidden border border-zinc-800/50 bg-zinc-900/20 p-8 md:p-10">
-			<div class="absolute top-0 left-0 h-full w-[3px] bg-gradient-to-b from-violet-accent to-violet-accent/0"></div>
+			<div class="absolute top-0 left-0 h-full w-[3px] bg-gradient-to-b from-zinc-300 to-zinc-300/0"></div>
 			<h3 class="font-display text-xl font-[700] text-zinc-50 mb-6">What to Expect</h3>
 			<ul class="space-y-4">
 				{#each [
@@ -214,11 +214,11 @@
 				</a>
 			</div>
 		{:else if applicationStatus === 'not_yet_open'}
-			<div class="relative overflow-hidden border border-amber-accent/20 bg-amber-accent/[0.03] p-10 md:p-14 text-center">
-				<div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-amber-accent/30 to-transparent"></div>
-				<div class="inline-flex items-center gap-2 rounded-full bg-amber-accent/10 px-4 py-1.5 mb-4">
-					<span class="h-2 w-2 rounded-full bg-amber-accent"></span>
-					<span class="font-mono text-xs tracking-[0.2em] uppercase text-amber-accent/90"
+			<div class="relative overflow-hidden border border-green-electric/20 bg-green-electric/[0.03] p-10 md:p-14 text-center">
+				<div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-green-electric/30 to-transparent"></div>
+				<div class="inline-flex items-center gap-2 rounded-full bg-green-electric/10 px-4 py-1.5 mb-4">
+					<span class="h-2 w-2 rounded-full bg-green-electric"></span>
+					<span class="font-mono text-xs tracking-[0.2em] uppercase text-green-electric/90"
 						>Applications Not Yet Open</span
 					>
 				</div>
