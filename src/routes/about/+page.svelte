@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { tilt } from '$lib/fx/actions';
 	import { members } from '$lib/data/members';
 	import aboutImage from '$lib/assets/about.jpeg';
 
@@ -150,7 +149,7 @@
 		<div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 sm:gap-5">
 			{#each members as member}
 				<div class="group">
-					<div use:tilt class="relative mb-3 overflow-hidden aspect-square border border-zinc-800/50 bg-zinc-900 transition-all duration-500 group-hover:border-green-electric/30">
+					<div class="relative mb-3 overflow-hidden aspect-square border border-zinc-800/50 bg-zinc-900 transition-all duration-500 group-hover:border-green-electric/30">
 						<img
 							src={getProfileImage(member.image)}
 							loading="lazy"

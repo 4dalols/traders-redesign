@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ripple, tilt } from '$lib/fx/actions';
+	import { ripple } from '$lib/fx/actions';
 	import { tiers, tierLabels, getSponsorsByTier } from '$lib/data/sponsors';
 	import type { Sponsor } from '$lib/data/sponsors';
 
@@ -148,7 +148,6 @@
 								href={sponsor.url}
 								target="_blank"
 								rel="noopener noreferrer"
-								use:tilt={10}
 								class="group flex items-center justify-center bg-white {tierStyles[tier].padding} border border-zinc-200/10 transition-all duration-300 {tierStyles[tier].borderHover} hover:bg-white {sponsor.logoFill
 									? 'min-h-[4.5rem] md:min-h-[5.5rem]'
 									: ''}"
