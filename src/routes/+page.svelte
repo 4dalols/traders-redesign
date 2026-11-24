@@ -4,7 +4,7 @@
 	import { sponsors } from '$lib/data/sponsors';
 	import AsciiLogo from '$lib/components/AsciiLogo.svelte';
 	import Odometer from '$lib/components/Odometer.svelte';
-	import { ripple, tilt } from '$lib/fx/actions';
+	import { ripple } from '$lib/fx/actions';
 
 	// Dynamic imports for sponsor logos (for ticker)
 	const sponsorLogos = import.meta.glob('$lib/assets/sponsors/*.{png,svg,jpg}', {
@@ -231,7 +231,6 @@
 			<!-- Large card — Compete -->
 			<a
 				href="{base}/competition"
-				use:tilt={8}
 				class="group relative md:col-span-7 overflow-hidden border border-zinc-800/50 bg-zinc-900/20 p-10 md:p-14 transition-all duration-500 hover:border-green-electric/30 hover:bg-zinc-900/40"
 			>
 				<!-- Animated top line -->
@@ -265,8 +264,7 @@
 				<!-- Sponsors card -->
 				<a
 					href="{base}/sponsors"
-					use:tilt={8}
-					class="group relative flex-1 overflow-hidden border border-zinc-800/50 bg-zinc-900/20 p-8 md:p-10 transition-all duration-500 hover:border-zinc-300/30 hover:bg-zinc-900/40"
+					class="group relative flex-1 overflow-hidden border border-zinc-800/50 bg-zinc-900/20 p-8 md:p-10 transition-all duration-500 hover:border-green-electric/30 hover:bg-zinc-900/40"
 				>
 					<div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-zinc-300 via-zinc-300/50 to-transparent scale-x-0 origin-left transition-transform duration-700 group-hover:scale-x-100"></div>
 
@@ -287,7 +285,6 @@
 				<!-- Join card -->
 				<a
 					href="{base}/join"
-					use:tilt={8}
 					class="group relative flex-1 overflow-hidden border border-zinc-800/50 bg-zinc-900/20 p-8 md:p-10 transition-all duration-500 hover:border-green-electric/30 hover:bg-zinc-900/40"
 				>
 					<div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-green-electric via-green-electric/50 to-transparent scale-x-0 origin-left transition-transform duration-700 group-hover:scale-x-100"></div>

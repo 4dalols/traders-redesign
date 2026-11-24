@@ -67,7 +67,6 @@
 </svg>
 
 <BootScreen />
-<div class="crt-overlay" aria-hidden="true"></div>
 
 <!-- Navigation -->
 <nav class="fixed top-0 z-50 w-full bg-[#050505]/95">

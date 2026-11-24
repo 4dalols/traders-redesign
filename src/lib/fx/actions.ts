@@ -1,5 +1,3 @@
-const finePointer = () =>
-	typeof window !== 'undefined' && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 export const reducedMotion = () =>
 	typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -23,45 +21,6 @@ export function ripple(node: HTMLElement) {
 	};
 	node.addEventListener('pointerdown', down);
 	return { destroy: () => node.removeEventListener('pointerdown', down) };
-}
-
-/** 3D tilt toward the cursor with a holographic foil shine (expects the .holo class for the shine). */
-export function tilt(node: HTMLElement, max = 14) {
-	if (!finePointer() || reducedMotion()) return;
-	node.classList.add('tilt-card');
-	let pending: PointerEvent | null = null;
-	const move = (e: PointerEvent) => {
-		if (!pending) requestAnimationFrame(apply);
-		pending = e;
-	};
-	const apply = () => {
-		const e = pending;
-		pending = null;
-		if (!e || !node.classList.contains('tilt-armed')) return;
-		const r = node.getBoundingClientRect();
-		const x = (e.clientX - r.left) / r.width;
-		const y = (e.clientY - r.top) / r.height;
-		node.style.transform = `perspective(800px) rotateX(${(0.5 - y) * max}deg) rotateY(${(x - 0.5) * max}deg) scale(1.04)`;
-		node.style.setProperty('--mx', `${x * 100}%`);
-		node.style.setProperty('--my', `${y * 100}%`);
-		node.classList.add('tilt-active');
-	};
-	const enter = () => node.classList.add('tilt-armed');
-	const leave = () => {
-		node.classList.remove('tilt-armed');
-		node.style.transform = '';
-		node.classList.remove('tilt-active');
-	};
-	node.addEventListener('pointerenter', enter);
-	node.addEventListener('pointermove', move);
-	node.addEventListener('pointerleave', leave);
-	return {
-		destroy() {
-			node.removeEventListener('pointerenter', enter);
-			node.removeEventListener('pointermove', move);
-			node.removeEventListener('pointerleave', leave);
-		}
-	};
 }
 
 /** Adds .in-view once the element scrolls into view. */
