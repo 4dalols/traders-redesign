@@ -118,7 +118,7 @@
 
 /* ── Redesign FX ───────────────────────────────────────────── */
 
-/* CRT: scanlines + vignette over the whole page, chromatic aberration on headings */
+/* CRT: scanlines + vignette over the whole page */
 .crt-overlay {
 	position: fixed;
 	inset: 0;
@@ -139,9 +139,6 @@
 	47% { opacity: 0.85; }
 	48% { opacity: 1; }
 	73% { opacity: 0.92; }
-}
-h1:not([data-no-decode]), h2 {
-	text-shadow: -1.5px 0 rgba(0, 220, 130, 0.35);
 }
 @media (prefers-reduced-motion: reduce) {
 	.crt-overlay { animation: none; }
