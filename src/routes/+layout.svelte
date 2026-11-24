@@ -9,9 +9,8 @@
 	import CompetitionApplyBanner from '$lib/components/CompetitionApplyBanner.svelte';
 	import BootScreen from '$lib/components/BootScreen.svelte';
 	import ScrollProgress from '$lib/components/ScrollProgress.svelte';
-	import { game, pnl, startFeed } from '$lib/fx/game.svelte';
 	import { onMount } from 'svelte';
-	import { afterNavigate, goto } from '$app/navigation';
+	import { afterNavigate } from '$app/navigation';
 	import Lenis from 'lenis';
 	import { lite, reducedMotion } from '$lib/fx/actions';
 	import { whenBooted } from '$lib/fx/ascii';
@@ -31,19 +30,10 @@
 
 	let lenis: Lenis | undefined;
 	onMount(() => {
-		startFeed();
-		const onKey = (e: KeyboardEvent) => {
-			const el = e.target as HTMLElement;
-			if (el.isContentEditable || /INPUT|TEXTAREA|SELECT/.test(el.tagName)) return;
-			if (e.metaKey || e.ctrlKey || e.altKey || e.key.toLowerCase() !== 't') return;
-			goto(base + ($page.route.id === '/trade' ? '/' : '/trade'));
-		};
-		window.addEventListener('keydown', onKey);
 		if (!reducedMotion() && !lite())
 			lenis = new Lenis({ autoRaf: true, lerp: 0.09, anchors: true });
 		return () => {
 			lenis?.destroy();
-			window.removeEventListener('keydown', onKey);
 		};
 	});
 	afterNavigate(async ({ type }) => {
@@ -51,8 +41,6 @@
 		await whenBooted();
 		applyTitleFx();
 	});
-
-	const traded = $derived(game.position !== 0 || game.cash !== 0);
 </script>
 
 <svelte:head>
@@ -104,18 +92,6 @@
 					{/if}
 				</a>
 			{/each}
-			<a
-				href="{base}/trade"
-				class="ml-3 border px-3 py-1.5 font-mono text-[12px] tracking-[0.15em] transition-colors
-					{traded
-					? pnl() >= 0
-						? 'border-green-electric/40 text-green-electric'
-						: 'border-rose-400/40 text-rose-400'
-					: 'border-zinc-700 text-zinc-400 hover:border-green-electric/40 hover:text-green-electric'}"
-				title="Press T to trade"
-			>
-				{#if traded}P&amp;L {pnl() >= 0 ? '+' : ''}{pnl().toFixed(2)}{:else}TMIT {game.price.toFixed(2)}{/if}
-			</a>
 		</div>
 
 		<!-- Mobile hamburger -->
@@ -228,7 +204,7 @@
 		</div>
 
 		<div class="mt-12 flex flex-col items-start justify-between gap-4 border-t border-zinc-800/30 pt-8 md:flex-row md:items-center">
-			<p class="font-mono text-xs tracking-wider text-zinc-500">&copy; {new Date().getFullYear()} Traders@MIT <a href="{base}/trade" class="ml-4 text-zinc-600 hover:text-green-electric">psst: press <kbd class="border border-zinc-700 px-1 text-green-electric">T</kbd> to trade</a></p>
+			<p class="font-mono text-xs tracking-wider text-zinc-500">&copy; {new Date().getFullYear()} Traders@MIT</p>
 			<a
 				href="https://accessibility.mit.edu/"
 				target="_blank"
