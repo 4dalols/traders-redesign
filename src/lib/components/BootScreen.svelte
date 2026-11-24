@@ -1,19 +1,25 @@
 <script lang="ts">
 	import { onMount, tick } from 'svelte';
-	import { LOGO_ART as ART, TRADERS_ART, GLYPHS, esc, handoff } from '$lib/fx/ascii';
+	import { TRADERS_ART, GLYPHS, handoff } from '$lib/fx/ascii';
 
-	const LINES: [string, string][] = [
-		['TRADERS@MIT BIOS v19.0 (c) MIT', ''],
-		['Memory test ............ 640K', 'OK'],
-		['Connecting to exchange.mit.edu', 'OK'],
-		['Loading order book ..... 1,024 levels', 'OK'],
-		['Spawning market makers', 'OK'],
-		['Calibrating risk limits', 'OK']
-	];
+	// A random-walk price path that ends higher than it starts.
+	const N = 90;
+	let pts: number[] = [];
+	for (let i = 0, v = 100; i < N; i++, v += (Math.random() - 0.42) * 0.9) pts.push(v);
+	if (pts[N - 1] <= pts[0]) pts = pts.map((v) => 2 * pts[0] - v);
+	const lo = Math.min(...pts);
+	const hi = Math.max(...pts);
+	const X = (i: number) => (i / (N - 1)) * 1000;
+	const Y = (v: number) => 270 - ((v - lo) / (hi - lo || 1)) * 220;
 
 	let show = $state(true);
-	let lineCount = $state(0);
-	let pre = $state<HTMLPreElement>();
+	let line = $state('');
+	let area = $state('');
+	let dot = $state<[number, number] | null>(null);
+	let price = $state(pts[0]);
+	let clock = $state('09:29:57');
+	let open = $state(false);
+	const chg = $derived((price / pts[0] - 1) * 100);
 	let dust = $state<HTMLCanvasElement>();
 	let dusting = $state(false);
 	let skipDust = false;
@@ -222,9 +228,6 @@
 		window.addEventListener('wheel', block, { capture: true, passive: false });
 		window.addEventListener('touchmove', block, { capture: true, passive: false });
 
-		const resolveAt = ART.map((row) =>
-			[...row].map((_, c) => 900 + c * 16 + Math.random() * 500)
-		);
 		const start = performance.now();
 		let raf = 0;
 		let done = false;
@@ -246,28 +249,22 @@
 
 		const frame = (now: number) => {
 			const t = now - start;
-			lineCount = Math.min(LINES.length, Math.floor(t / 180));
-			if (t > 700 && pre) {
-				let out = '';
-				ART.forEach((row, r) => {
-					[...row].forEach((ch, c) => {
-						if (ch === ' ') {
-							out += ' ';
-							return;
-						}
-						const light = 43 + 14 * Math.max(0, Math.sin(c / 5 + r * 0.4 - t / 450)) ** 3;
-						if (t >= resolveAt[r][c]) {
-							out += `<span style="color:hsl(155 100% ${light.toFixed(1)}%)">${ch}</span>`;
-						} else if (Math.random() < 0.6) {
-							const g = GLYPHS[(Math.random() * GLYPHS.length) | 0];
-							out += `<span style="color:#00DC8255">${esc(g)}</span>`;
-						} else out += ' ';
-					});
-					out += '\n';
-				});
-				pre.innerHTML = out;
-			}
-			if (t > 3300) finish();
+			const p = Math.min(1, Math.max(0, (t - 250) / 1800));
+			const e = p < 0.5 ? 2 * p * p : 1 - (-2 * p + 2) ** 2 / 2;
+			const f = e * (N - 1);
+			const i = Math.floor(f);
+			const v = i >= N - 1 ? pts[N - 1] : pts[i] + (pts[i + 1] - pts[i]) * (f - i);
+			let d = `M0 ${Y(pts[0]).toFixed(1)}`;
+			for (let k = 1; k <= i; k++) d += ` L${X(k).toFixed(1)} ${Y(pts[k]).toFixed(1)}`;
+			d += ` L${X(f).toFixed(1)} ${Y(v).toFixed(1)}`;
+			line = d;
+			area = `${d} L${X(f).toFixed(1)} 300 L0 300 Z`;
+			dot = [X(f) / 10, Y(v) / 3];
+			price = v;
+			const sec = Math.floor(t / 700);
+			open = sec >= 3;
+			clock = open ? '09:30:00' : `09:29:5${7 + sec}`;
+			if (t > 2900) finish();
 			if (!done) raf = requestAnimationFrame(frame);
 		};
 		raf = requestAnimationFrame(frame);
@@ -300,18 +297,46 @@
 </script>
 
 {#if show}
-	<div class="boot crt-screen" aria-hidden="true">
+	<div class="boot" aria-hidden="true">
 		<div class="boot-inner">
-			<div class="boot-lines">
-				{#each LINES.slice(0, lineCount) as [label, status]}
-					<div>
-						<span class="text-zinc-400">&gt; {label}</span>
-						{#if status}<span class="text-green-electric"> [{status}]</span>{/if}
-					</div>
-				{/each}
-				<span class="cursor">█</span>
+			<div class="boot-head">
+				<span>Traders@MIT</span>
+				<span class="text-zinc-300">{clock} ET</span>
 			</div>
-			<pre bind:this={pre} class="boot-art"></pre>
+			<div class="boot-chart">
+				<svg viewBox="0 0 1000 300" preserveAspectRatio="none">
+					<defs>
+						<linearGradient id="boot-fill" x1="0" y1="0" x2="0" y2="1">
+							<stop offset="0" stop-color="#00DC82" stop-opacity="0.18" />
+							<stop offset="1" stop-color="#00DC82" stop-opacity="0" />
+						</linearGradient>
+					</defs>
+					{#each [50, 125, 200, 275] as y}
+						<line x1="0" x2="1000" y1={y} y2={y} class="grid" />
+					{/each}
+					<path d={area} fill="url(#boot-fill)" />
+					<path
+						d={line}
+						fill="none"
+						stroke="#00DC82"
+						stroke-width="2"
+						stroke-linejoin="round"
+						vector-effect="non-scaling-stroke"
+					/>
+				</svg>
+				{#if dot}
+					<span class="dot" class:live={open} style="left:{dot[0]}%;top:{dot[1]}%"></span>
+				{/if}
+			</div>
+			<div class="boot-foot">
+				<span class="status" class:open>{open ? 'Market open' : 'Pre-market'}</span>
+				<span class="quote">
+					{price.toFixed(2)}
+					<span class={chg >= 0 ? 'text-green-electric' : 'text-zinc-400'}
+						>{chg >= 0 ? '▲ +' : '▼ '}{chg.toFixed(2)}%</span
+					>
+				</span>
+			</div>
 			<div class="boot-skip">click or press any key to skip</div>
 		</div>
 	</div>
@@ -346,24 +371,67 @@
 		pointer-events: none;
 	}
 	.boot-inner {
-		width: min(92vw, 60rem);
+		width: min(88vw, 56rem);
+		font-variant-numeric: tabular-nums;
 	}
-	.boot-lines {
-		font-size: clamp(0.65rem, 1.4vw, 0.85rem);
-		line-height: 1.7;
-		min-height: 11em;
+	.boot-head,
+	.boot-foot {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
 	}
-	.cursor {
+	.boot-head {
+		font-size: 0.75rem;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+		color: #71717a;
+	}
+	.boot-chart {
+		position: relative;
+		height: clamp(160px, 38vh, 340px);
+		margin: 1.25rem 0;
+		border-bottom: 1px solid #27272a;
+	}
+	.boot-chart svg {
+		display: block;
+		width: 100%;
+		height: 100%;
+		overflow: visible;
+	}
+	.grid {
+		stroke: rgba(255, 255, 255, 0.05);
+		stroke-dasharray: 2 6;
+		vector-effect: non-scaling-stroke;
+	}
+	.dot {
+		position: absolute;
+		width: 8px;
+		height: 8px;
+		border-radius: 9999px;
+		background: var(--color-green-electric);
+		transform: translate(-50%, -50%);
+	}
+	.dot.live {
+		animation: ping 1s ease-out infinite;
+	}
+	.status {
+		border: 1px solid #3f3f46;
+		padding: 0.35rem 0.8rem;
+		font-size: 0.7rem;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+		color: #71717a;
+		transition: color 0.3s, border-color 0.3s, background-color 0.3s;
+	}
+	.status.open {
 		color: var(--color-green-electric);
-		animation: blink 0.8s steps(1) infinite;
+		border-color: rgb(0 220 130 / 0.4);
+		background: rgb(0 220 130 / 0.06);
 	}
-	.boot-art {
-		font-family: ui-monospace, Menlo, Consolas, 'DejaVu Sans Mono', 'Courier New', monospace;
-		margin-top: 1.5rem;
-		font-size: clamp(5px, 1.45vw, 15px);
-		line-height: 1.1;
-		min-height: 15em;
-		text-shadow: 0 0 8px currentColor;
+	.quote {
+		font-size: clamp(1rem, 2vw, 1.25rem);
+		color: #fafafa;
 	}
 	.boot-skip {
 		margin-top: 2rem;
@@ -372,9 +440,12 @@
 		text-transform: uppercase;
 		color: #52525b;
 	}
-	@keyframes blink {
-		50% {
-			opacity: 0;
+	@keyframes ping {
+		0% {
+			box-shadow: 0 0 0 0 rgb(0 220 130 / 0.6);
+		}
+		100% {
+			box-shadow: 0 0 0 14px rgb(0 220 130 / 0);
 		}
 	}
 </style>
