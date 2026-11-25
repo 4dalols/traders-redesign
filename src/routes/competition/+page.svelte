@@ -139,9 +139,10 @@
 	<!-- Competition Details — asymmetric -->
 	<div class="mb-20 md:mb-28 grid gap-5 md:grid-cols-12 stagger-children" use:fadeIn>
 		<!-- Details -->
-		<div class="md:col-span-7 relative overflow-hidden border border-zinc-800/50 bg-zinc-900/20 p-8 md:p-10">
+		<div class="md:col-span-7 group relative overflow-hidden border border-zinc-800/50 bg-zinc-900/20 p-8 md:p-10 transition-all duration-500 hover:border-green-electric/30 hover:bg-zinc-900/40">
 			<div class="absolute top-0 left-0 h-full w-[3px] bg-gradient-to-b from-green-electric to-green-electric/0"></div>
-			<h3 class="font-display text-xl font-[700] text-zinc-50 mb-6">Details</h3>
+			<div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-green-electric via-green-electric/50 to-transparent scale-x-0 origin-left transition-transform duration-700 group-hover:scale-x-100"></div>
+			<h3 class="font-display text-xl font-[700] text-zinc-50 transition-colors duration-300 group-hover:text-green-electric mb-6">Details</h3>
 			<dl class="space-y-5">
 				<div class="flex items-start gap-6">
 					<dt class="font-mono text-xs tracking-[0.2em] uppercase text-zinc-500 w-24 shrink-0 pt-0.5">Date</dt>
@@ -166,9 +167,10 @@
 		</div>
 
 		<!-- What to Expect -->
-		<div class="md:col-span-5 relative overflow-hidden border border-zinc-800/50 bg-zinc-900/20 p-8 md:p-10">
+		<div class="md:col-span-5 group relative overflow-hidden border border-zinc-800/50 bg-zinc-900/20 p-8 md:p-10 transition-all duration-500 hover:border-violet-accent/30 hover:bg-zinc-900/40">
 			<div class="absolute top-0 left-0 h-full w-[3px] bg-gradient-to-b from-violet-accent to-violet-accent/0"></div>
-			<h3 class="font-display text-xl font-[700] text-zinc-50 mb-6">What to Expect</h3>
+			<div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-violet-accent via-violet-accent/50 to-transparent scale-x-0 origin-left transition-transform duration-700 group-hover:scale-x-100"></div>
+			<h3 class="font-display text-xl font-[700] text-zinc-50 transition-colors duration-300 group-hover:text-violet-accent mb-6">What to Expect</h3>
 			<ul class="space-y-4">
 				{#each [
 					'~120 students from MIT, Harvard, Princeton, Stanford, CMU, and more',

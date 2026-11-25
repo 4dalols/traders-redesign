@@ -70,17 +70,18 @@
 
 		<div class="grid gap-5 md:grid-cols-12 stagger-children" use:fadeIn>
 			<!-- Design Cases — large -->
-			<div class="md:col-span-7 group relative overflow-hidden border border-zinc-800/50 bg-zinc-900/20 p-8 md:p-10 transition-all duration-500 hover:border-green-electric/20">
+			<div class="md:col-span-7 group relative overflow-hidden border border-zinc-800/50 bg-zinc-900/20 p-8 md:p-10 transition-all duration-500 hover:border-green-electric/30 hover:bg-zinc-900/40">
 				<div class="absolute top-0 left-0 h-full w-[3px] bg-gradient-to-b from-green-electric to-green-electric/0"></div>
+				<div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-green-electric via-green-electric/50 to-transparent scale-x-0 origin-left transition-transform duration-700 group-hover:scale-x-100"></div>
 				<div class="flex items-center gap-4 mb-5">
-					<div class="flex h-10 w-10 items-center justify-center border border-zinc-700/50 text-green-electric transition-colors duration-300 group-hover:border-green-electric/30">
+					<div class="flex h-10 w-10 items-center justify-center border border-zinc-700/50 text-green-electric transition-colors duration-300 group-hover:border-green-electric/40">
 						<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
 						</svg>
 					</div>
 					<span class="font-mono text-xs tracking-[0.25em] uppercase text-green-electric/40">01</span>
 				</div>
-				<h3 class="font-display text-xl md:text-2xl font-[700] text-zinc-50">Design Trading Cases</h3>
+				<h3 class="font-display text-xl md:text-2xl font-[700] text-zinc-50 transition-colors duration-300 group-hover:text-green-electric">Design Trading Cases</h3>
 				<p class="mt-4 text-sm leading-relaxed text-zinc-300 font-light max-w-lg">
 					Create and refine the trading cases used in our annual competition,
 					covering market-making, quantitative strategies, and more.
@@ -88,17 +89,18 @@
 			</div>
 
 			<!-- Develop Exchange -->
-			<div class="md:col-span-5 group relative overflow-hidden border border-zinc-800/50 bg-zinc-900/20 p-8 md:p-10 transition-all duration-500 hover:border-violet-accent/20">
+			<div class="md:col-span-5 group relative overflow-hidden border border-zinc-800/50 bg-zinc-900/20 p-8 md:p-10 transition-all duration-500 hover:border-violet-accent/30 hover:bg-zinc-900/40">
 				<div class="absolute top-0 left-0 h-full w-[3px] bg-gradient-to-b from-violet-accent to-violet-accent/0"></div>
+				<div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-violet-accent via-violet-accent/50 to-transparent scale-x-0 origin-left transition-transform duration-700 group-hover:scale-x-100"></div>
 				<div class="flex items-center gap-4 mb-5">
-					<div class="flex h-10 w-10 items-center justify-center border border-zinc-700/50 text-violet-accent transition-colors duration-300 group-hover:border-violet-accent/30">
+					<div class="flex h-10 w-10 items-center justify-center border border-zinc-700/50 text-violet-accent transition-colors duration-300 group-hover:border-violet-accent/40">
 						<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
 						</svg>
 					</div>
 					<span class="font-mono text-xs tracking-[0.25em] uppercase text-violet-accent/40">02</span>
 				</div>
-				<h3 class="font-display text-xl md:text-2xl font-[700] text-zinc-50">Develop the Exchange</h3>
+				<h3 class="font-display text-xl md:text-2xl font-[700] text-zinc-50 transition-colors duration-300 group-hover:text-violet-accent">Develop the Exchange</h3>
 				<p class="mt-4 text-sm leading-relaxed text-zinc-300 font-light">
 					Build and maintain the trading exchange platform that powers
 					the competition.
@@ -106,17 +108,18 @@
 			</div>
 
 			<!-- Logistics -->
-			<div class="md:col-span-5 group relative overflow-hidden border border-zinc-800/50 bg-zinc-900/20 p-8 md:p-10 transition-all duration-500 hover:border-amber-accent/20">
+			<div class="md:col-span-5 group relative overflow-hidden border border-zinc-800/50 bg-zinc-900/20 p-8 md:p-10 transition-all duration-500 hover:border-amber-accent/30 hover:bg-zinc-900/40">
 				<div class="absolute top-0 left-0 h-full w-[3px] bg-gradient-to-b from-amber-accent to-amber-accent/0"></div>
+				<div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-amber-accent via-amber-accent/50 to-transparent scale-x-0 origin-left transition-transform duration-700 group-hover:scale-x-100"></div>
 				<div class="flex items-center gap-4 mb-5">
-					<div class="flex h-10 w-10 items-center justify-center border border-zinc-700/50 text-amber-accent transition-colors duration-300 group-hover:border-amber-accent/30">
+					<div class="flex h-10 w-10 items-center justify-center border border-zinc-700/50 text-amber-accent transition-colors duration-300 group-hover:border-amber-accent/40">
 						<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
 						</svg>
 					</div>
 					<span class="font-mono text-xs tracking-[0.25em] uppercase text-amber-accent/40">03</span>
 				</div>
-				<h3 class="font-display text-xl md:text-2xl font-[700] text-zinc-50">Coordinate Logistics</h3>
+				<h3 class="font-display text-xl md:text-2xl font-[700] text-zinc-50 transition-colors duration-300 group-hover:text-amber-accent">Coordinate Logistics</h3>
 				<p class="mt-4 text-sm leading-relaxed text-zinc-300 font-light">
 					Organize the competition weekend, from venue booking and catering to
 					competitor communication and sponsor coordination.
@@ -124,17 +127,18 @@
 			</div>
 
 			<!-- Learn -->
-			<div class="md:col-span-7 group relative overflow-hidden border border-zinc-800/50 bg-zinc-900/20 p-8 md:p-10 transition-all duration-500 hover:border-green-electric/20">
+			<div class="md:col-span-7 group relative overflow-hidden border border-zinc-800/50 bg-zinc-900/20 p-8 md:p-10 transition-all duration-500 hover:border-green-electric/30 hover:bg-zinc-900/40">
 				<div class="absolute top-0 left-0 h-full w-[3px] bg-gradient-to-b from-green-electric/60 to-green-electric/0"></div>
+				<div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-green-electric via-green-electric/50 to-transparent scale-x-0 origin-left transition-transform duration-700 group-hover:scale-x-100"></div>
 				<div class="flex items-center gap-4 mb-5">
-					<div class="flex h-10 w-10 items-center justify-center border border-zinc-700/50 text-green-electric/80 transition-colors duration-300 group-hover:border-green-electric/30">
+					<div class="flex h-10 w-10 items-center justify-center border border-zinc-700/50 text-green-electric/80 transition-colors duration-300 group-hover:border-green-electric/40">
 						<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
 						</svg>
 					</div>
 					<span class="font-mono text-xs tracking-[0.25em] uppercase text-green-electric/30">04</span>
 				</div>
-				<h3 class="font-display text-xl md:text-2xl font-[700] text-zinc-50">Learn & Grow</h3>
+				<h3 class="font-display text-xl md:text-2xl font-[700] text-zinc-50 transition-colors duration-300 group-hover:text-green-electric">Learn & Grow</h3>
 				<p class="mt-4 text-sm leading-relaxed text-zinc-300 font-light max-w-lg">
 					Participate in weekly seminars during IAP covering quantitative finance,
 					probability, and market microstructure. No experience required!
@@ -164,17 +168,18 @@
 
 			<div class="space-y-4">
 				{#each [
-					{ num: '01', title: 'Intro to Traders & Q&A', desc: 'Learn about the club and ask questions', color: 'green-electric' },
-					{ num: '02', title: 'Grid Game', desc: 'Play a decision-making game and socialize', color: 'green-electric' },
-					{ num: '03', title: 'Estimathon', desc: 'Test your estimation skills in a fun competition', color: 'violet-accent' }
+					{ num: '01', title: 'Intro to Traders & Q&A', desc: 'Learn about the club and ask questions', color: 'green-electric', hover: { card: 'hover:border-green-electric/30', bar: 'from-green-electric via-green-electric/50', badge: 'group-hover:text-green-electric group-hover:border-green-electric/40', title: 'group-hover:text-green-electric' } },
+					{ num: '02', title: 'Grid Game', desc: 'Play a decision-making game and socialize', color: 'green-electric', hover: { card: 'hover:border-green-electric/30', bar: 'from-green-electric via-green-electric/50', badge: 'group-hover:text-green-electric group-hover:border-green-electric/40', title: 'group-hover:text-green-electric' } },
+					{ num: '03', title: 'Estimathon', desc: 'Test your estimation skills in a fun competition', color: 'violet-accent', hover: { card: 'hover:border-violet-accent/30', bar: 'from-violet-accent via-violet-accent/50', badge: 'group-hover:text-violet-accent group-hover:border-violet-accent/40', title: 'group-hover:text-violet-accent' } }
 				] as event}
-					<div class="group flex items-start gap-6 relative border border-zinc-800/50 bg-zinc-900/20 p-6 md:p-8 transition-all duration-500 hover:border-{event.color}/20 hover:bg-zinc-900/40">
+					<div class="group flex items-start gap-6 relative overflow-hidden border border-zinc-800/50 bg-zinc-900/20 p-6 md:p-8 transition-all duration-500 {event.hover.card} hover:bg-zinc-900/40">
+						<div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r {event.hover.bar} to-transparent scale-x-0 origin-left transition-transform duration-700 group-hover:scale-x-100"></div>
 						<!-- Number badge -->
-						<div class="flex h-12 w-12 shrink-0 items-center justify-center border border-zinc-700/50 font-mono text-sm font-bold text-zinc-400 transition-all duration-300 group-hover:text-green-electric group-hover:border-green-electric/30">
+						<div class="flex h-12 w-12 shrink-0 items-center justify-center border border-zinc-700/50 font-mono text-sm font-bold text-zinc-400 transition-all duration-300 {event.hover.badge}">
 							{event.num}
 						</div>
 						<div>
-							<h4 class="font-display text-base md:text-lg font-[700] text-zinc-100 transition-colors duration-300 group-hover:text-zinc-50">
+							<h4 class="font-display text-base md:text-lg font-[700] text-zinc-100 transition-colors duration-300 {event.hover.title}">
 								{#if event.title === 'Estimathon'}
 									<a href="https://estimathon.com/" target="_blank" rel="noopener noreferrer" class="italic underline underline-offset-4 hover:text-green-electric">{event.title}</a>
 								{:else}

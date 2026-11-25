@@ -88,10 +88,11 @@
 	<div class="mb-24 md:mb-32 stagger-children" use:fadeIn>
 		<div class="grid gap-5 md:grid-cols-12">
 			<!-- Competition — large card -->
-			<div class="md:col-span-7 group relative overflow-hidden border border-zinc-800/50 bg-zinc-900/20 p-8 md:p-10 transition-all duration-500 hover:border-green-electric/20">
+			<div class="md:col-span-7 group relative overflow-hidden border border-zinc-800/50 bg-zinc-900/20 p-8 md:p-10 transition-all duration-500 hover:border-green-electric/30 hover:bg-zinc-900/40">
 				<div class="absolute top-0 left-0 h-full w-[3px] bg-gradient-to-b from-green-electric to-green-electric/0"></div>
+				<div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-green-electric via-green-electric/50 to-transparent scale-x-0 origin-left transition-transform duration-700 group-hover:scale-x-100"></div>
 				<span class="font-mono text-xs tracking-[0.25em] uppercase text-green-electric/60 mb-4 block">01</span>
-				<h3 class="font-display text-xl md:text-2xl font-[700] text-zinc-50">Competition</h3>
+				<h3 class="font-display text-xl md:text-2xl font-[700] text-zinc-50 transition-colors duration-300 group-hover:text-green-electric">Competition</h3>
 				<p class="mt-4 text-sm leading-relaxed text-zinc-300 font-light max-w-lg">
 					Each spring, we organize a two-day trading competition that brings together ~120
 					students from MIT, Harvard, Princeton, Stanford, CMU, and other top universities.
@@ -100,10 +101,11 @@
 			</div>
 
 			<!-- Education -->
-			<div class="md:col-span-5 group relative overflow-hidden border border-zinc-800/50 bg-zinc-900/20 p-8 md:p-10 transition-all duration-500 hover:border-violet-accent/20">
+			<div class="md:col-span-5 group relative overflow-hidden border border-zinc-800/50 bg-zinc-900/20 p-8 md:p-10 transition-all duration-500 hover:border-violet-accent/30 hover:bg-zinc-900/40">
 				<div class="absolute top-0 left-0 h-full w-[3px] bg-gradient-to-b from-violet-accent to-violet-accent/0"></div>
+				<div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-violet-accent via-violet-accent/50 to-transparent scale-x-0 origin-left transition-transform duration-700 group-hover:scale-x-100"></div>
 				<span class="font-mono text-xs tracking-[0.25em] uppercase text-violet-accent/60 mb-4 block">02</span>
-				<h3 class="font-display text-xl md:text-2xl font-[700] text-zinc-50">Education</h3>
+				<h3 class="font-display text-xl md:text-2xl font-[700] text-zinc-50 transition-colors duration-300 group-hover:text-violet-accent">Education</h3>
 				<p class="mt-4 text-sm leading-relaxed text-zinc-300 font-light">
 					Throughout the year, we hold internal seminars covering market
 					microstructure, quantitative strategies, probability, and other topics in
@@ -112,10 +114,11 @@
 			</div>
 
 			<!-- Industry -->
-			<div class="md:col-span-5 group relative overflow-hidden border border-zinc-800/50 bg-zinc-900/20 p-8 md:p-10 transition-all duration-500 hover:border-amber-accent/20">
+			<div class="md:col-span-5 group relative overflow-hidden border border-zinc-800/50 bg-zinc-900/20 p-8 md:p-10 transition-all duration-500 hover:border-amber-accent/30 hover:bg-zinc-900/40">
 				<div class="absolute top-0 left-0 h-full w-[3px] bg-gradient-to-b from-amber-accent to-amber-accent/0"></div>
+				<div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-amber-accent via-amber-accent/50 to-transparent scale-x-0 origin-left transition-transform duration-700 group-hover:scale-x-100"></div>
 				<span class="font-mono text-xs tracking-[0.25em] uppercase text-amber-accent/60 mb-4 block">03</span>
-				<h3 class="font-display text-xl md:text-2xl font-[700] text-zinc-50">Industry Connections</h3>
+				<h3 class="font-display text-xl md:text-2xl font-[700] text-zinc-50 transition-colors duration-300 group-hover:text-amber-accent">Industry Connections</h3>
 				<p class="mt-4 text-sm leading-relaxed text-zinc-300 font-light">
 					We work closely with industry-leading sponsors who provide mentorship,
 					networking opportunities, and career insights.
@@ -123,10 +126,11 @@
 			</div>
 
 			<!-- Community -->
-			<div class="md:col-span-7 group relative overflow-hidden border border-zinc-800/50 bg-zinc-900/20 p-8 md:p-10 transition-all duration-500 hover:border-green-electric/20">
+			<div class="md:col-span-7 group relative overflow-hidden border border-zinc-800/50 bg-zinc-900/20 p-8 md:p-10 transition-all duration-500 hover:border-green-electric/30 hover:bg-zinc-900/40">
 				<div class="absolute top-0 left-0 h-full w-[3px] bg-gradient-to-b from-green-electric/60 to-green-electric/0"></div>
+				<div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-green-electric via-green-electric/50 to-transparent scale-x-0 origin-left transition-transform duration-700 group-hover:scale-x-100"></div>
 				<span class="font-mono text-xs tracking-[0.25em] uppercase text-green-electric/40 mb-4 block">04</span>
-				<h3 class="font-display text-xl md:text-2xl font-[700] text-zinc-50">Community</h3>
+				<h3 class="font-display text-xl md:text-2xl font-[700] text-zinc-50 transition-colors duration-300 group-hover:text-green-electric">Community</h3>
 				<p class="mt-4 text-sm leading-relaxed text-zinc-300 font-light max-w-lg">
 					As a small group of ~25 undergraduate students with a flat structure, every
 					board member contributes meaningfully. We host social events including coffee
