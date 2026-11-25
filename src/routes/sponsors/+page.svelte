@@ -27,53 +27,53 @@
 		}
 	> = {
 	diamond: {
-		badge: 'text-green-electric border-green-electric/25 bg-green-electric/[0.06]',
+		badge: 'text-sky-300 border-sky-400/25 bg-sky-400/[0.06]',
 		badgeIcon: '◆',
 		logoSize: 'h-16 md:h-20',
 		grid: 'grid-cols-2',
-		lineColor: 'from-green-electric/30',
-		accentColor: 'green-electric',
-		borderHover: 'hover:border-green-electric/30',
+		lineColor: 'from-sky-400/30',
+		accentColor: 'sky-400',
+		borderHover: 'hover:border-sky-400/30',
 		padding: 'p-4 md:p-6'
 	},
 	platinum: {
-		badge: 'text-zinc-100 border-zinc-300/25 bg-zinc-300/[0.06]',
+		badge: 'text-violet-300 border-violet-400/25 bg-violet-400/[0.06]',
 		badgeIcon: '⬡',
 		logoSize: 'h-12 md:h-16',
 		grid: 'grid-cols-2 md:grid-cols-3',
-		lineColor: 'from-zinc-300/25',
-		accentColor: 'zinc-300',
-		borderHover: 'hover:border-zinc-300/30',
+		lineColor: 'from-violet-400/25',
+		accentColor: 'violet-400',
+		borderHover: 'hover:border-violet-400/30',
 		padding: 'p-4 md:p-6'
 	},
 	gold: {
-		badge: 'text-zinc-300 border-zinc-400/25 bg-zinc-400/[0.06]',
+		badge: 'text-amber-300 border-amber-400/25 bg-amber-400/[0.06]',
 		badgeIcon: '●',
 		logoSize: 'h-10 md:h-14',
 		grid: 'grid-cols-2 md:grid-cols-3',
-		lineColor: 'from-zinc-400/20',
-		accentColor: 'zinc-400',
-		borderHover: 'hover:border-zinc-400/30',
+		lineColor: 'from-amber-400/20',
+		accentColor: 'amber-400',
+		borderHover: 'hover:border-amber-400/30',
 		padding: 'p-3 md:p-4'
 	},
 	silver: {
-		badge: 'text-zinc-400 border-zinc-500/20 bg-zinc-500/[0.04]',
+		badge: 'text-slate-300 border-slate-400/20 bg-slate-400/[0.04]',
 		badgeIcon: '○',
 		logoSize: 'h-8 md:h-12',
 		grid: 'grid-cols-2 md:grid-cols-4',
-		lineColor: 'from-zinc-500/15',
-		accentColor: 'zinc-500',
-		borderHover: 'hover:border-zinc-500/25',
+		lineColor: 'from-slate-400/15',
+		accentColor: 'slate-400',
+		borderHover: 'hover:border-slate-400/25',
 		padding: 'p-3 md:p-4'
 	},
 	bronze: {
-		badge: 'text-zinc-500 border-zinc-600/20 bg-zinc-600/[0.05]',
+		badge: 'text-orange-300/90 border-orange-400/20 bg-orange-400/[0.05]',
 		badgeIcon: '▪',
 		logoSize: 'h-8 md:h-12',
 		grid: 'grid-cols-2 md:grid-cols-4',
-		lineColor: 'from-zinc-600/15',
-		accentColor: 'zinc-600',
-		borderHover: 'hover:border-zinc-600/25',
+		lineColor: 'from-orange-400/15',
+		accentColor: 'orange-400',
+		borderHover: 'hover:border-orange-400/25',
 		padding: 'p-3 md:p-4'
 	}
 	};
@@ -113,7 +113,7 @@
 			<h1 class="font-display text-5xl md:text-7xl lg:text-8xl font-[800] tracking-[-0.03em] text-zinc-50">
 				Sponsors
 			</h1>
-			<div class="mt-5 h-[3px] w-20 bg-gradient-to-r from-green-electric to-zinc-300"></div>
+			<div class="mt-5 h-[3px] w-20 bg-gradient-to-r from-green-electric to-violet-accent"></div>
 			<p class="mt-8 max-w-2xl text-lg md:text-xl leading-relaxed text-zinc-300 font-light">
 				Our sponsors are essential to making the competition and our events possible. We are
 				grateful for their continued support.
