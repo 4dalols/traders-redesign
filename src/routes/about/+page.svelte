@@ -49,7 +49,7 @@
 				<h1 class="font-display text-5xl md:text-7xl lg:text-8xl font-[800] tracking-[-0.03em] text-zinc-50">
 					About
 				</h1>
-				<div class="mt-5 h-[3px] w-20 bg-gradient-to-r from-green-electric to-zinc-300"></div>
+				<div class="mt-5 h-[3px] w-20 bg-gradient-to-r from-green-electric to-violet-accent"></div>
 				<p class="mt-8 text-lg md:text-xl leading-relaxed text-zinc-300 font-light">
 					Traders@MIT is MIT's premier undergraduate quantitative finance club. We partner
 					with leading trading firms to host the largest intercollegiate trading competition and
@@ -100,9 +100,9 @@
 			</div>
 
 			<!-- Education -->
-			<div class="md:col-span-5 group relative overflow-hidden border border-zinc-800/50 bg-zinc-900/20 p-8 md:p-10 transition-all duration-500 hover:border-zinc-300/20">
-				<div class="absolute top-0 left-0 h-full w-[3px] bg-gradient-to-b from-zinc-300 to-zinc-300/0"></div>
-				<span class="font-mono text-xs tracking-[0.25em] uppercase text-zinc-300/60 mb-4 block">02</span>
+			<div class="md:col-span-5 group relative overflow-hidden border border-zinc-800/50 bg-zinc-900/20 p-8 md:p-10 transition-all duration-500 hover:border-violet-accent/20">
+				<div class="absolute top-0 left-0 h-full w-[3px] bg-gradient-to-b from-violet-accent to-violet-accent/0"></div>
+				<span class="font-mono text-xs tracking-[0.25em] uppercase text-violet-accent/60 mb-4 block">02</span>
 				<h3 class="font-display text-xl md:text-2xl font-[700] text-zinc-50">Education</h3>
 				<p class="mt-4 text-sm leading-relaxed text-zinc-300 font-light">
 					Throughout the year, we hold internal seminars covering market
@@ -112,9 +112,9 @@
 			</div>
 
 			<!-- Industry -->
-			<div class="md:col-span-5 group relative overflow-hidden border border-zinc-800/50 bg-zinc-900/20 p-8 md:p-10 transition-all duration-500 hover:border-green-electric/20">
-				<div class="absolute top-0 left-0 h-full w-[3px] bg-gradient-to-b from-green-electric to-green-electric/0"></div>
-				<span class="font-mono text-xs tracking-[0.25em] uppercase text-green-electric/60 mb-4 block">03</span>
+			<div class="md:col-span-5 group relative overflow-hidden border border-zinc-800/50 bg-zinc-900/20 p-8 md:p-10 transition-all duration-500 hover:border-amber-accent/20">
+				<div class="absolute top-0 left-0 h-full w-[3px] bg-gradient-to-b from-amber-accent to-amber-accent/0"></div>
+				<span class="font-mono text-xs tracking-[0.25em] uppercase text-amber-accent/60 mb-4 block">03</span>
 				<h3 class="font-display text-xl md:text-2xl font-[700] text-zinc-50">Industry Connections</h3>
 				<p class="mt-4 text-sm leading-relaxed text-zinc-300 font-light">
 					We work closely with industry-leading sponsors who provide mentorship,
