@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ContactCTA from '$lib/components/ContactCTA.svelte';
 	import { members } from '$lib/data/members';
 	import aboutImage from '$lib/assets/about.jpeg';
 
@@ -174,17 +175,7 @@
 	</div>
 
 	<!-- Contact -->
-	<div class="mt-24 md:mt-32 relative overflow-hidden border border-green-electric/10 bg-green-electric/[0.02] p-10 md:p-14 text-center fade-in-section" use:fadeIn>
-		<div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-green-electric/30 to-transparent"></div>
-		<h3 class="font-display text-xl md:text-2xl font-[700] text-zinc-50">Get in Touch</h3>
-		<p class="mt-4 text-sm text-zinc-300 font-light">
-			For general inquiries, reach out to us at
-		</p>
-		<a
-			href="mailto:traders-exec@mit.edu"
-			class="mt-4 inline-block font-mono text-sm text-green-electric transition-all duration-300 hover:text-green-bright hover:shadow-[0_0_20px_rgba(0,220,130,0.15)]"
-		>
-			traders-exec@mit.edu
-		</a>
+	<div class="mt-24 md:mt-32 fade-in-section" use:fadeIn>
+		<ContactCTA title="Get in Touch" text="For general inquiries, reach out to our executive board." email="traders-exec@mit.edu" />
 	</div>
 </div>

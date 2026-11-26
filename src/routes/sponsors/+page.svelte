@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ripple } from '$lib/fx/actions';
+	import ContactCTA from '$lib/components/ContactCTA.svelte';
 	import { tiers, tierLabels, getSponsorsByTier } from '$lib/data/sponsors';
 	import type { Sponsor } from '$lib/data/sponsors';
 
@@ -177,23 +177,8 @@
 		{/each}
 	</div>
 
-	<!-- Sponsorship CTA -->
-	<div class="mt-24 md:mt-32 relative overflow-hidden border border-green-electric/10 bg-green-electric/[0.02] p-10 md:p-14 text-center fade-in-section" use:fadeIn>
-		<div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-green-electric/30 to-transparent"></div>
-		<!-- Decorative corners -->
-		<div class="absolute top-4 left-4 w-8 h-8 border-t border-l border-green-electric/15"></div>
-		<div class="absolute bottom-4 right-4 w-8 h-8 border-b border-r border-green-electric/15"></div>
-
-		<h3 class="font-display text-xl md:text-2xl font-[700] text-zinc-50">Interested in Sponsoring?</h3>
-		<p class="mt-3 text-sm text-zinc-300 font-light">
-			Learn more about sponsorship opportunities by reaching out to us.
-		</p>
-		<a
-			href="mailto:traders-sponsorships@mit.edu"
-			use:ripple
-			class="mt-8 inline-block border border-green-electric/30 bg-green-electric/[0.05] px-8 py-4 font-mono text-sm text-green-electric transition-all duration-300 hover:bg-green-electric/10 hover:border-green-electric/50 hover:shadow-[0_0_30px_rgba(0,220,130,0.1)] active:scale-[0.97]"
-		>
-			traders-sponsorships@mit.edu
-		</a>
+	<!-- Contact -->
+	<div class="mt-24 md:mt-32 fade-in-section" use:fadeIn>
+		<ContactCTA title="Interested in Sponsoring?" text="Learn more about sponsorship opportunities by reaching out to us." email="traders-sponsorships@mit.edu" />
 	</div>
 </div>

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ContactCTA from '$lib/components/ContactCTA.svelte';
 	function fadeIn(node: HTMLElement) {
 		const observer = new IntersectionObserver(
 			(entries) => {
@@ -44,16 +45,17 @@
 
 	<!-- Application Status -->
 	<div class="fade-in-section mb-20 md:mb-28" use:fadeIn>
-		<div class="relative overflow-hidden border border-zinc-800/50 bg-zinc-900/20 p-10 md:p-14 text-center">
-			<div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-zinc-700/30 to-transparent"></div>
-			<div class="inline-flex items-center gap-2 rounded-full bg-zinc-800/50 px-4 py-1.5 mb-4">
-				<span class="h-2 w-2 rounded-full bg-zinc-600"></span>
-				<span class="font-mono text-xs tracking-[0.2em] uppercase text-zinc-500">Applications Closed</span>
+		<div class="relative flex flex-col gap-3 border border-zinc-800/50 bg-zinc-900/20 py-5 pl-6 pr-6 md:flex-row md:items-center md:gap-6 md:pl-8">
+			<div class="absolute left-0 top-0 bottom-0 w-[2px] bg-gradient-to-b from-zinc-600 to-zinc-600/0"></div>
+			<div class="flex items-center gap-3">
+				<span class="whitespace-nowrap font-display text-lg font-[700] text-zinc-50">Board Recruitment</span>
+				<span class="inline-flex items-center gap-2 rounded-full bg-zinc-800/50 px-3 py-1">
+					<span class="h-2 w-2 rounded-full bg-zinc-600"></span>
+					<span class="font-mono text-[11px] tracking-[0.2em] uppercase text-zinc-500">Closed</span>
+				</span>
 			</div>
-			<h3 class="font-display text-2xl md:text-3xl font-[700] text-zinc-50">Board Recruitment</h3>
-			<p class="mt-3 text-sm text-zinc-300 font-light">
-				Applications to join Traders@MIT are currently closed. Check back in fall 2027 for Traders Week
-				and our next recruitment cycle.
+			<p class="text-sm text-zinc-400 font-light md:ml-auto">
+				Next cycle starts with Traders Week in <span class="text-zinc-200 font-normal">fall 2027</span>.
 			</p>
 		</div>
 	</div>
@@ -194,18 +196,8 @@
 		</div>
 	</div>
 
-	<!-- Contact CTA -->
-	<div class="relative overflow-hidden border border-green-electric/10 bg-green-electric/[0.02] p-10 md:p-14 text-center fade-in-section" use:fadeIn>
-		<div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-green-electric/30 to-transparent"></div>
-		<h3 class="font-display text-xl md:text-2xl font-[700] text-zinc-50">Questions?</h3>
-		<p class="mt-4 text-sm text-zinc-300 font-light">
-			Reach out to us at
-		</p>
-		<a
-			href="mailto:traders-exec@mit.edu"
-			class="mt-4 inline-block font-mono text-sm text-green-electric transition-all duration-300 hover:text-green-bright hover:shadow-[0_0_20px_rgba(0,220,130,0.15)]"
-		>
-			traders-exec@mit.edu
-		</a>
+	<!-- Contact -->
+	<div class="fade-in-section" use:fadeIn>
+		<ContactCTA title="Questions?" text="Want to know more about joining? Reach out to our executive board." email="traders-exec@mit.edu" />
 	</div>
 </div>
