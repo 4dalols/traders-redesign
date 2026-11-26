@@ -126,8 +126,8 @@
 			<!-- Text content -->
 			<div class="md:col-span-6">
 				<div class="flex items-center gap-4 mb-5">
-					<span class="font-mono text-xs tracking-[0.25em] uppercase text-green-electric/70">19th Annual</span>
-					<div class="h-[1px] w-12 bg-green-electric/30"></div>
+					<span class="font-mono text-xs tracking-[0.25em] uppercase text-green-electric/80">19th Annual</span>
+					<div class="h-[1px] w-12 bg-green-electric/70"></div>
 				</div>
 				<h1 class="font-display text-5xl md:text-7xl lg:text-8xl font-[800] tracking-[-0.03em] text-zinc-50">
 					Trading<br/>
@@ -236,9 +236,9 @@
 	<!-- What to Expect -->
 	<div class="mb-20 md:mb-28">
 		<div class="fade-in-section relative mb-10" use:fadeIn>
-			<span class="font-mono text-xs tracking-[0.25em] uppercase text-green-electric/50 block mb-3">Overview</span>
+			<span class="font-mono text-xs tracking-[0.25em] uppercase text-green-electric block mb-3">Overview</span>
 			<h2 class="font-display text-3xl md:text-5xl font-[800] tracking-[-0.02em] text-zinc-50">What to Expect</h2>
-			<div class="mt-4 h-[2px] w-12 bg-green-electric/40"></div>
+			<div class="mt-4 h-[2px] w-12 bg-green-electric/80"></div>
 		</div>
 		<div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 stagger-children" use:fadeIn>
 			{#each expect as item}
@@ -259,9 +259,9 @@
 	<!-- Photo Gallery -->
 	<div class="fade-in-section" use:fadeIn>
 		<div class="relative mb-10">
-			<span class="font-mono text-xs tracking-[0.25em] uppercase text-green-electric/50 block mb-3">Photos</span>
+			<span class="font-mono text-xs tracking-[0.25em] uppercase text-green-electric block mb-3">Photos</span>
 			<h2 class="font-display text-3xl md:text-5xl font-[800] tracking-[-0.02em] text-zinc-50">Gallery</h2>
-			<div class="mt-4 h-[2px] w-12 bg-green-electric/40"></div>
+			<div class="mt-4 h-[2px] w-12 bg-green-electric/80"></div>
 		</div>
 
 		<div class="relative overflow-hidden border border-zinc-800/50 bg-zinc-900/20">

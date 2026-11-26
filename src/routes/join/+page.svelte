@@ -63,11 +63,11 @@
 	<!-- What Board Members Do — asymmetric grid -->
 	<div class="mb-20 md:mb-28">
 		<div class="relative mb-12">
-			<span class="font-mono text-xs tracking-[0.25em] uppercase text-green-electric/50 block mb-3">Roles</span>
+			<span class="font-mono text-xs tracking-[0.25em] uppercase text-green-electric block mb-3">Roles</span>
 			<h2 class="font-display text-3xl md:text-5xl font-[800] tracking-[-0.02em] text-zinc-50">
 				What Board Members Do
 			</h2>
-			<div class="mt-4 h-[2px] w-12 bg-green-electric/40"></div>
+			<div class="mt-4 h-[2px] w-12 bg-green-electric/80"></div>
 		</div>
 
 		<div class="grid gap-5 md:grid-cols-12 stagger-children" use:fadeIn>
@@ -81,7 +81,7 @@
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
 						</svg>
 					</div>
-					<span class="font-mono text-xs tracking-[0.25em] uppercase text-green-electric/40">01</span>
+					<span class="font-mono text-xs tracking-[0.25em] uppercase text-green-electric/80">01</span>
 				</div>
 				<h3 class="font-display text-xl md:text-2xl font-[700] text-zinc-50 transition-colors duration-300 group-hover:text-green-electric">Design Trading Cases</h3>
 				<p class="mt-4 text-sm leading-relaxed text-zinc-300 font-light max-w-lg">
@@ -100,7 +100,7 @@
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
 						</svg>
 					</div>
-					<span class="font-mono text-xs tracking-[0.25em] uppercase text-violet-accent/40">02</span>
+					<span class="font-mono text-xs tracking-[0.25em] uppercase text-violet-accent/80">02</span>
 				</div>
 				<h3 class="font-display text-xl md:text-2xl font-[700] text-zinc-50 transition-colors duration-300 group-hover:text-violet-accent">Develop the Exchange</h3>
 				<p class="mt-4 text-sm leading-relaxed text-zinc-300 font-light">
@@ -119,7 +119,7 @@
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
 						</svg>
 					</div>
-					<span class="font-mono text-xs tracking-[0.25em] uppercase text-amber-accent/40">03</span>
+					<span class="font-mono text-xs tracking-[0.25em] uppercase text-amber-accent/80">03</span>
 				</div>
 				<h3 class="font-display text-xl md:text-2xl font-[700] text-zinc-50 transition-colors duration-300 group-hover:text-amber-accent">Coordinate Logistics</h3>
 				<p class="mt-4 text-sm leading-relaxed text-zinc-300 font-light">
@@ -138,7 +138,7 @@
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
 						</svg>
 					</div>
-					<span class="font-mono text-xs tracking-[0.25em] uppercase text-green-electric/30">04</span>
+					<span class="font-mono text-xs tracking-[0.25em] uppercase text-green-electric/80">04</span>
 				</div>
 				<h3 class="font-display text-xl md:text-2xl font-[700] text-zinc-50 transition-colors duration-300 group-hover:text-green-electric">Learn & Grow</h3>
 				<p class="mt-4 text-sm leading-relaxed text-zinc-300 font-light max-w-lg">
@@ -152,11 +152,11 @@
 	<!-- Traders Week — creative timeline -->
 	<div class="mb-20 md:mb-28 fade-in-section" use:fadeIn>
 		<div class="relative mb-12">
-			<span class="font-mono text-xs tracking-[0.25em] uppercase text-violet-accent/50 block mb-3">Fall Recruitment</span>
+			<span class="font-mono text-xs tracking-[0.25em] uppercase text-violet-accent block mb-3">Fall Recruitment</span>
 			<h2 class="font-display text-3xl md:text-5xl font-[800] tracking-[-0.02em] text-zinc-50">
 				Traders Week
 			</h2>
-			<div class="mt-4 h-[2px] w-12 bg-violet-accent/40"></div>
+			<div class="mt-4 h-[2px] w-12 bg-violet-accent/80"></div>
 			<p class="mt-6 text-sm text-zinc-300 font-light max-w-xl">
 				Each fall, we host Traders Week, a series of events to introduce students to the club
 				and quantitative finance.
