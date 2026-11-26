@@ -3,6 +3,7 @@
 	import groupPhoto from '$lib/assets/group.jpg';
 	import { sponsors } from '$lib/data/sponsors';
 	import AsciiLogo from '$lib/components/AsciiLogo.svelte';
+	import HeroChart from '$lib/components/HeroChart.svelte';
 	import Odometer from '$lib/components/Odometer.svelte';
 	import { ripple } from '$lib/fx/actions';
 
@@ -75,14 +76,16 @@
 	<div class="absolute right-[-15%] top-[5%] h-[1060px] w-[1060px] translate-x-[180px] -translate-y-[180px] rounded-full" style="background: radial-gradient(closest-side, rgba(0, 220, 130, 0.04), rgba(0, 220, 130, 0.02) 45%, transparent)"></div>
 	<div class="absolute left-[-10%] bottom-[-10%] h-[800px] w-[800px] translate-x-[-150px] translate-y-[150px] rounded-full" style="background: radial-gradient(closest-side, rgba(139, 92, 246, 0.025), rgba(139, 92, 246, 0.012) 45%, transparent)"></div>
 
+	<HeroChart />
+
 	<div class="relative z-10 w-full px-6 md:px-12 lg:px-16 py-16 md:py-24">
 		<div class="mx-auto max-w-[85rem]">
 			<!-- Badge -->
 			<div
-				class="mb-10 inline-flex items-center gap-3 rounded-full border border-green-electric/20 bg-green-electric/[0.05] px-5 py-2.5"
+				class="mb-10 inline-flex items-center gap-2.5 md:gap-3 rounded-full border border-green-electric/20 bg-green-electric/[0.05] px-4 md:px-5 py-2.5 whitespace-nowrap"
 			>
 				<span class="h-2 w-2 rounded-full bg-green-electric shadow-[0_0_12px_rgba(0,220,130,0.5)]"></span>
-				<span class="font-mono text-xs font-medium tracking-[0.25em] uppercase text-green-electric/80"
+				<span class="font-mono text-[10px] sm:text-xs font-medium tracking-[0.14em] sm:tracking-[0.25em] uppercase text-green-electric/80"
 					>MIT's Premier Quant Finance Club</span
 				>
 			</div>

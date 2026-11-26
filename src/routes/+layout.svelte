@@ -18,6 +18,11 @@
 
 	let { children } = $props();
 
+	const siteOrigin = import.meta.env.VITE_SITE_ORIGIN ?? 'https://4dalols.github.io';
+	const siteUrl = siteOrigin + (import.meta.env.VITE_BASE_PATH ?? '/traders-redesign');
+	const siteDescription =
+		"MIT's premier undergraduate quantitative finance club. Hosting the largest intercollegiate trading competition.";
+
 	const navItems = [
 		{ href: '/', label: 'Home' },
 		{ href: '/about', label: 'About' },
@@ -46,10 +51,21 @@
 <svelte:head>
 	<link rel="icon" href={favicon} />
 	<title>Traders@MIT</title>
-	<meta
-		name="description"
-		content="MIT's premier undergraduate quantitative finance club. Hosting the largest intercollegiate trading competition."
-	/>
+	<meta name="description" content={siteDescription} />
+	<meta name="theme-color" content="#050505" />
+	<meta property="og:type" content="website" />
+	<meta property="og:site_name" content="Traders@MIT" />
+	<meta property="og:title" content="Traders@MIT" />
+	<meta property="og:description" content={siteDescription} />
+	<meta property="og:url" content="{siteOrigin}{$page.url.pathname}" />
+	<meta property="og:image" content="{siteUrl}/og.png" />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
+	<meta property="og:image:alt" content="Traders@MIT, MIT's premier quant finance club" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content="Traders@MIT" />
+	<meta name="twitter:description" content={siteDescription} />
+	<meta name="twitter:image" content="{siteUrl}/og.png" />
 </svelte:head>
 
 <!-- SVG filter: makes white pixels transparent (used for HRT logo in ticker) -->
@@ -157,12 +173,12 @@
 		<div class="flex flex-col gap-12 md:flex-row md:items-start md:justify-between">
 			<!-- Brand -->
 			<div class="flex flex-col gap-4">
-				<div class="flex items-center gap-3">
+				<div class="flex flex-col items-start gap-3 sm:flex-row sm:items-center">
 					<img src={logo} alt="Traders@MIT" class="h-6 w-auto opacity-70" />
-					<div class="h-4 w-[1px] bg-zinc-800"></div>
+					<div class="hidden h-4 w-[1px] bg-zinc-800 sm:block"></div>
 					<span class="font-mono text-xs tracking-[0.2em] uppercase text-zinc-500">MIT's Premier Quant Finance Club</span>
 				</div>
-			<div class="flex gap-6 mt-2 items-center">
+			<div class="flex flex-col items-start gap-3 mt-2 sm:flex-row sm:items-center sm:gap-6">
 				<a
 					href="mailto:traders-exec@mit.edu"
 				class="font-mono text-xs text-zinc-500 transition-colors duration-300 hover:text-green-electric"
